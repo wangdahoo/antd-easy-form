@@ -8,7 +8,7 @@ declare enum FormItemType {
 }
 
 type InputItem = {
-    id: string
+    name: string
     itemType: FormItemType.INPUT
     labelText: string
     placeholder: string
@@ -18,7 +18,7 @@ type InputItem = {
 }
 
 type NumberItem = {
-    id: string
+    name: string
     itemType: FormItemType.NUMBER
     labelText: string
     defaultValue: number
@@ -28,7 +28,7 @@ type NumberItem = {
 }
 
 type TextareaItem = {
-    id: string
+    name: string
     itemType: FormItemType.TEXTAREA
     labelText: string
     placeholder: string
@@ -38,7 +38,7 @@ type TextareaItem = {
 }
 
 type CheckboxItem = {
-    id: string
+    name: string
     itemType: FormItemType.CHECKBOX
     labelText: string
     options: {
@@ -50,7 +50,7 @@ type CheckboxItem = {
 }
 
 type RadioItem = {
-    id: string
+    name: string
     itemType: FormItemType.RADIO
     labelText: string
     options: {
@@ -63,7 +63,7 @@ type RadioItem = {
 }
 
 type SelectItem = {
-    id: string
+    name: string
     itemType: FormItemType.SELECT
     labelText: string
     options: {
@@ -94,5 +94,5 @@ type FormValues = {
 
 interface ValidationResult {
     result: boolean
-    errors: { [id: string]: string }
+    errors: { [name: string]: string }
 }

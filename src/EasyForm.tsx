@@ -13,7 +13,7 @@ const createFormValues = (items: FormItem[]): FormValues => {
         ].indexOf(item.itemType) > -1) {
             return {
                 ...values,
-                [item.id]: (item as any).defaultValue
+                [item.name]: (item as any).defaultValue
             }
         }
 
@@ -98,7 +98,7 @@ export function EasyForm (props: FormProps) {
 
             return (
                 <Select
-                    value={formValues.values[selectItem.id] as string}
+                    value={formValues.values[selectItem.name] as string}
                     onChange={(value: string) => {
                         const values = formValues.values
 
@@ -106,7 +106,7 @@ export function EasyForm (props: FormProps) {
                             ...formValues,
                             values: {
                                 ...values,
-                                [selectItem.id]: value
+                                [selectItem.name]: value
                             }
                         })
                     }}
@@ -125,7 +125,7 @@ export function EasyForm (props: FormProps) {
 
             return (
                 <Checkbox.Group
-                    value={formValues.values[checkboxItem.id] as string[]}
+                    value={formValues.values[checkboxItem.name] as string[]}
                     onChange={value => {
                         const values = formValues.values
 
@@ -133,7 +133,7 @@ export function EasyForm (props: FormProps) {
                             ...formValues,
                             values: {
                                 ...values,
-                                [checkboxItem.id]: value as string[]
+                                [checkboxItem.name]: value as string[]
                             }
                         })
                     }}
@@ -151,7 +151,7 @@ export function EasyForm (props: FormProps) {
 
             return (
                 <Radio.Group
-                  value={formValues.values[radioItem.id]}
+                  value={formValues.values[radioItem.name]}
                   onChange={e => {
                     const values = formValues.values
 
@@ -159,7 +159,7 @@ export function EasyForm (props: FormProps) {
                         ...formValues,
                         values: {
                             ...values,
-                            [radioItem.id]: e.target.value
+                            [radioItem.name]: e.target.value
                         }
                     })
                   }}
@@ -178,7 +178,7 @@ export function EasyForm (props: FormProps) {
 
             return (
                 <Input.TextArea
-                    value={formValues.values[textareaItem.id]}
+                    value={formValues.values[textareaItem.name]}
                     onChange={e => {
                         const values = formValues.values
 
@@ -186,7 +186,7 @@ export function EasyForm (props: FormProps) {
                             ...formValues,
                             values: {
                                 ...values,
-                                [textareaItem.id]: e.target.value
+                                [textareaItem.name]: e.target.value
                             }
                         })
                     }}
@@ -200,7 +200,7 @@ export function EasyForm (props: FormProps) {
             return (
                 <InputNumber
                     style={{width: '100%'}}
-                    value={formValues.values[numberItem.id] as number}
+                    value={formValues.values[numberItem.name] as number}
                     onChange={value => {
                         value = value || numberItem.min
 
@@ -210,7 +210,7 @@ export function EasyForm (props: FormProps) {
                             ...formValues,
                             values: {
                                 ...values,
-                                [numberItem.id]: value
+                                [numberItem.name]: value
                             }
                         })
                     }}
@@ -232,7 +232,7 @@ export function EasyForm (props: FormProps) {
 
             return (
                 <Input
-                    value={formValues.values[inputItem.id]}
+                    value={formValues.values[inputItem.name]}
                     onChange={e => {
                         const values = formValues.values
 
@@ -240,7 +240,7 @@ export function EasyForm (props: FormProps) {
                             ...formValues,
                             values: {
                                 ...values,
-                                [inputItem.id]: e.target.value
+                                [inputItem.name]: e.target.value
                             }
                         })
                     }}
@@ -267,7 +267,7 @@ export function EasyForm (props: FormProps) {
                     FormItemType.CHECKBOX,
                     FormItemType.SELECT
                 ].indexOf(itemType) > -1) {
-                    const errMsg: string = (validationResult.errors as any)[item.id]
+                    const errMsg: string = (validationResult.errors as any)[item.name]
 
                     return (
                         <div className="form-item" key={index}>
