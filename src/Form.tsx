@@ -1,11 +1,16 @@
+import './index.less'
 import React, { useState } from 'react'
 import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty } from 'antd'
 import classnames from 'classnames'
+import { FormItem, FormValues, FormItemType, FormProps, ValidationResult,
+    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem } from './types'
 
 const createFormValues = (items: FormItem[]): FormValues => {
     const values = items.reduce((values: { [key: string]: string|string[] }, item: FormItem) => {
         if ([
             FormItemType.INPUT,
+            FormItemType.PASSWORD,
+            FormItemType.NUMBER,
             FormItemType.TEXTAREA,
             FormItemType.RADIO,
             FormItemType.CHECKBOX,
@@ -20,37 +25,38 @@ const createFormValues = (items: FormItem[]): FormValues => {
         return values
     }, {})
 
-    return {
-        values,
-        result: -1,
-        comment: ''
-    }
+    return values
 }
 
 const shouldValidateRequired = (item: FormItem) => [
     FormItemType.INPUT,
+    FormItemType.PASSWORD,
     FormItemType.TEXTAREA,
     FormItemType.CHECKBOX,
     FormItemType.RADIO
 ].indexOf(item.itemType) > -1
 
-export function EasyForm (props: FormProps) {
-    const { formItems = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'left', labelWidth = 100 } = props
-    const [formValues, setFormValues] = useState(createFormValues(formItems))
+const shouldValidateRegExp = (item: FormItem) => [
+    FormItemType.INPUT,
+    FormItemType.PASSWORD,
+    FormItemType.TEXTAREA
+].indexOf(item.itemType) > -1
+
+export function Form (props: FormProps) {
+    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'left', labelWidth = 100 } = props
+    const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
 
     function onSubmit () {
-        console.log('form items =>', formItems)
-        console.log('form values =>', formValues)
-
-        const newValidationResult = validate(formItems, formValues)
+        // console.log(items, formValues)
+        const newValidationResult = validate(items, formValues)
         console.log(newValidationResult)
 
         if (newValidationResult.result) {
             if (props.onSubmit) props.onSubmit(formValues)
             setValidationResult({ result: false, errors: {} })
-            setFormValues(createFormValues(formItems))
+            setFormValues(createFormValues(items))
         } else {
             setValidationResult(newValidationResult)
         }
@@ -59,21 +65,29 @@ export function EasyForm (props: FormProps) {
     }
 
     function validate (items: FormItem[], formValues: FormValues): ValidationResult {
-        const { values } = formValues
-
         return items.reduce(({ result, errors }: ValidationResult, item: FormItem) => {
+            const { name, labelText } = item as any
+            const value = formValues[name]
+
             // 校验必填项
             if (shouldValidateRequired(item) && (item as any).required) {
-                const { id, labelText } = item as any
-                const value = values[id]
-
                 if (
                     // 空字符串
                     (typeof value === 'string' && value === '') ||
                     // 空数组
                     (Object.prototype.toString.call(value) === '[object Array]' && (value as string[]).length === 0)
                  ) {
-                    errors[id] = `${labelText}为必填项`
+                    errors[name] = `${labelText}为必填项`
+                    result = false
+                }
+            }
+
+            // 有正则表达式的话，校验正则表单时
+            if (shouldValidateRegExp(item) && (item as any).re && (item as any).re instanceof RegExp && typeof value === 'string') {
+                const re = (item as any).re as RegExp
+
+                if (!re.test(value) && !errors[name]) {
+                    errors[name] = `${labelText}格式不正确`
                     result = false
                 }
             }
@@ -88,26 +102,21 @@ export function EasyForm (props: FormProps) {
         })
     }
 
-    const renderFormItem = (formItem: FormItem) => {
-        const { itemType } = formItem
+    const renderFormItem = (item: FormItem) => {
+        const { itemType } = item
 
         switch (itemType) {
 
         case FormItemType.SELECT:
-            const selectItem = formItem as SelectItem
+            const selectItem = item as SelectItem
 
             return (
                 <Select
-                    value={formValues.values[selectItem.name] as string}
+                    value={formValues[selectItem.name] as string}
                     onChange={(value: string) => {
-                        const values = formValues.values
-
                         setFormValues({
                             ...formValues,
-                            values: {
-                                ...values,
-                                [selectItem.name]: value
-                            }
+                            [selectItem.name]: value
                         })
                     }}
                     style={{width: '100%'}}
@@ -121,20 +130,15 @@ export function EasyForm (props: FormProps) {
             )
 
         case FormItemType.CHECKBOX:
-            const checkboxItem = formItem as CheckboxItem
+            const checkboxItem = item as CheckboxItem
 
             return (
                 <Checkbox.Group
-                    value={formValues.values[checkboxItem.name] as string[]}
+                    value={formValues[checkboxItem.name] as string[]}
                     onChange={value => {
-                        const values = formValues.values
-
                         setFormValues({
                             ...formValues,
-                            values: {
-                                ...values,
-                                [checkboxItem.name]: value as string[]
-                            }
+                            [checkboxItem.name]: value as string[]
                         })
                     }}
                 >
@@ -147,20 +151,15 @@ export function EasyForm (props: FormProps) {
             )
 
         case FormItemType.RADIO:
-            const radioItem = formItem as RadioItem
+            const radioItem = item as RadioItem
 
             return (
                 <Radio.Group
-                  value={formValues.values[radioItem.name]}
+                  value={formValues[radioItem.name]}
                   onChange={e => {
-                    const values = formValues.values
-
                     setFormValues({
                         ...formValues,
-                        values: {
-                            ...values,
-                            [radioItem.name]: e.target.value
-                        }
+                        [radioItem.name]: e.target.value
                     })
                   }}
                   buttonStyle={radioItem.buttonStyle}
@@ -174,20 +173,15 @@ export function EasyForm (props: FormProps) {
               )
 
         case FormItemType.TEXTAREA:
-            const textareaItem = formItem as TextareaItem
+            const textareaItem = item as TextareaItem
 
             return (
                 <Input.TextArea
-                    value={formValues.values[textareaItem.name]}
+                    value={formValues[textareaItem.name]}
                     onChange={e => {
-                        const values = formValues.values
-
                         setFormValues({
                             ...formValues,
-                            values: {
-                                ...values,
-                                [textareaItem.name]: e.target.value
-                            }
+                            [textareaItem.name]: e.target.value
                         })
                     }}
                     placeholder={textareaItem.placeholder}
@@ -195,23 +189,18 @@ export function EasyForm (props: FormProps) {
             )
 
         case FormItemType.NUMBER:
-            const numberItem = formItem as NumberItem
+            const numberItem = item as NumberItem
 
             return (
                 <InputNumber
                     style={{width: '100%'}}
-                    value={formValues.values[numberItem.name] as number}
+                    value={formValues[numberItem.name] as number}
                     onChange={value => {
                         value = value || numberItem.min
 
-                        const values = formValues.values
-
                         setFormValues({
                             ...formValues,
-                            values: {
-                                ...values,
-                                [numberItem.name]: value
-                            }
+                            [numberItem.name]: value
                         })
                     }}
                     min={numberItem.min}
@@ -227,21 +216,32 @@ export function EasyForm (props: FormProps) {
                 />
             )
 
+        case FormItemType.PASSWORD:
+            const passwordItem = item as PasswordItem
+
+            return (
+                <Input.Password
+                    value={formValues[passwordItem.name]}
+                    onChange={e => {
+                        setFormValues({
+                            ...formValues,
+                            [passwordItem.name]: e.target.value
+                        })
+                    }}
+                    placeholder={passwordItem.placeholder}
+                />
+            )
+
         default:
-            const inputItem = formItem as InputItem
+            const inputItem = item as InputItem
 
             return (
                 <Input
-                    value={formValues.values[inputItem.name]}
+                    value={formValues[inputItem.name]}
                     onChange={e => {
-                        const values = formValues.values
-
                         setFormValues({
                             ...formValues,
-                            values: {
-                                ...values,
-                                [inputItem.name]: e.target.value
-                            }
+                            [inputItem.name]: e.target.value
                         })
                     }}
                     placeholder={inputItem.placeholder}
@@ -250,17 +250,18 @@ export function EasyForm (props: FormProps) {
         }
     }
 
-    if (formItems.length === 0) return <Empty />
+    if (items.length === 0) return <Empty />
 
     return (
-        <div className="generated-form" style={{
+        <div className="ef-form" style={{
             width: `${formWidth}${formWidthUnit}`
         }}>
-            {formItems.map((item, index) => {
+            {items.map((item, index) => {
                 const { itemType } = item
 
                 if ([
                     FormItemType.INPUT,
+                    FormItemType.PASSWORD,
                     FormItemType.NUMBER,
                     FormItemType.TEXTAREA,
                     FormItemType.RADIO,
@@ -270,8 +271,8 @@ export function EasyForm (props: FormProps) {
                     const errMsg: string = (validationResult.errors as any)[item.name]
 
                     return (
-                        <div className="form-item" key={index}>
-                            <div className={classnames('form-item-label', labelAlign === 'top' ? 'label-standalone' : '')} style={{
+                        <div className="ef-form-item" key={index}>
+                            <div className={classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '')} style={{
                                 width: labelWidth,
                                 ...(labelAlign !== 'top' ? {
                                     textAlign: labelAlign
@@ -279,9 +280,9 @@ export function EasyForm (props: FormProps) {
                             }}>
                                 {(item as any).labelText}
                             </div>
-                            <div className='form-item-content'>
+                            <div className='ef-form-item-content'>
                                 {renderFormItem(item)}
-                                <div className="err-msg">
+                                <div className="ef-err-msg">
                                     {errMsg}
                                 </div>
                             </div>
@@ -292,11 +293,11 @@ export function EasyForm (props: FormProps) {
                 return null
             })}
 
-            <Divider />
+            <Divider className='ef-divider' />
 
             <div style={{ paddingLeft: labelWidth }}>
                 <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>提 交</Button>
-                <Button type="default" onClick={() => setFormValues(createFormValues(formItems))} style={{ width: 90 }}>重 置</Button>
+                <Button type="default" onClick={() => setFormValues(createFormValues(items))} style={{ width: 90 }}>重 置</Button>
             </div>
         </div>
     )

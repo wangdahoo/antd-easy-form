@@ -3399,9 +3399,9 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.npm.taobao.org/kind-of/download/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha1-B8BQNKbDSfoG4k+jWqdttFgM5N0=
 
-less@^2:
+less@^2.7.3:
   version "2.7.3"
-  resolved "https://registry.npm.taobao.org/less/download/less-2.7.3.tgz#cc1260f51c900a9ec0d91fb6998139e02507b63b"
+  resolved "https://registry.npm.taobao.org/less/download/less-2.7.3.tgz?cache=0&sync_timestamp=1581400805472&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fless%2Fdownload%2Fless-2.7.3.tgz#cc1260f51c900a9ec0d91fb6998139e02507b63b"
   integrity sha1-zBJg9RyQCp7A2R+2mYE54CUHtjs=
   optionalDependencies:
     errno "^0.1.1"

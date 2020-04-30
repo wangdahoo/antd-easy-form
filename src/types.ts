@@ -1,5 +1,6 @@
-declare enum FormItemType {
+export enum FormItemType {
     INPUT = 'input',
+    PASSWORD = 'password',
     NUMBER = 'number',
     TEXTAREA = 'textarea',
     CHECKBOX = 'checkbox',
@@ -7,7 +8,7 @@ declare enum FormItemType {
     SELECT = 'select'
 }
 
-type InputItem = {
+export type InputItem = {
     name: string
     itemType: FormItemType.INPUT
     labelText: string
@@ -17,7 +18,17 @@ type InputItem = {
     re?: RegExp
 }
 
-type NumberItem = {
+export type PasswordItem = {
+    name: string
+    itemType: FormItemType.PASSWORD
+    labelText: string
+    placeholder: string
+    defaultValue: string
+    required: boolean
+    re?: RegExp
+}
+
+export type NumberItem = {
     name: string
     itemType: FormItemType.NUMBER
     labelText: string
@@ -27,7 +38,7 @@ type NumberItem = {
     unit: string
 }
 
-type TextareaItem = {
+export type TextareaItem = {
     name: string
     itemType: FormItemType.TEXTAREA
     labelText: string
@@ -37,46 +48,46 @@ type TextareaItem = {
     re?: RegExp
 }
 
-type CheckboxItem = {
+export type CheckboxItem = {
     name: string
     itemType: FormItemType.CHECKBOX
     labelText: string
     options: {
-        value: string|number
+        value: string | number
         text: string
     }[]
-    defaultValue: (string|number) []
+    defaultValue: (string | number)[]
     required: boolean
 }
 
-type RadioItem = {
+export type RadioItem = {
     name: string
     itemType: FormItemType.RADIO
     labelText: string
     options: {
-        value: string|number
+        value: string | number
         text: string
     }[]
-    defaultValue: string|number
+    defaultValue: string | number
     buttonStyle: 'outline' | 'solid'
     required: boolean
 }
 
-type SelectItem = {
+export type SelectItem = {
     name: string
     itemType: FormItemType.SELECT
     labelText: string
     options: {
-        value: string|number
+        value: string | number
         text: string
     }[]
-    defaultValue: string|number
+    defaultValue: string | number
 }
 
-type FormItem =  InputItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem
+export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem
 
-interface FormProps {
-    formItems?: FormItem[]
+export interface FormProps {
+    items?: FormItem[]
     formWidth?: number
     formWidthUnit?: '%' | 'px'
     labelAlign?: 'left' | 'right' | 'top'
@@ -84,15 +95,11 @@ interface FormProps {
     onSubmit?: (formValue: FormValues) => void
 }
 
-type FormValues = {
-    values: {
-        [key: string]: string|string[]|number
-    }
-    result: -1|0|1
-    comment: string
+export type FormValues = {
+    [key: string]: string | string[] | number
 }
 
-interface ValidationResult {
+export interface ValidationResult {
     result: boolean
     errors: { [name: string]: string }
 }
