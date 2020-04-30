@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Tabs, Divider } from 'antd'
 
 // import { Form, FormItem, FormItemType } from '../dist/esm'
 import { Form, FormItem, FormItemType } from '../src'
 
-const items: FormItem[] = [
+const TabPane = Tabs.TabPane
+
+const loginFormItems: FormItem[] = [
     {
         name: 'username',
         itemType: FormItemType.INPUT,
@@ -25,13 +28,21 @@ const items: FormItem[] = [
 ]
 
 export default function App (props: any) {
+    const [items, setItems] = useState(loginFormItems)
+
     return (
-        <div style={{ width: 600, padding: 20 }}>
-            <Form
-                items={items}
-                labelAlign={'left'}
-                onSubmit={console.log}
-            />
+        <div style={{ padding: 20 }}>
+            <Tabs onChange={key => console.log}>
+                <TabPane tab='用户登录' key="login"></TabPane>
+            </Tabs>
+
+            <div style={{ width: 600, margin: '20px auto' }}>
+                <Form
+                    items={items as FormItem[]}
+                    labelAlign={'left'}
+                    onSubmit={console.log}
+                />
+            </div>
         </div>
     )
 }
