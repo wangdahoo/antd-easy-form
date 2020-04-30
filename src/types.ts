@@ -92,7 +92,7 @@ export interface FormProps {
     formWidthUnit?: '%' | 'px'
     labelAlign?: 'left' | 'right' | 'top'
     labelWidth?: number
-    onSubmit?: (formValue: FormValues) => void
+    onSubmit?: (values: FormValues) => void | Promise<void>
 }
 
 export type FormValues = {

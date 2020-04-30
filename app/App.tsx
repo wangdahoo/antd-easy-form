@@ -1,4 +1,6 @@
 import React from 'react'
+
+// import { Form, FormItem, FormItemType } from '../dist/esm'
 import { Form, FormItem, FormItemType } from '../src'
 
 const items: FormItem[] = [
@@ -25,7 +27,11 @@ const items: FormItem[] = [
 export default function App (props: any) {
     return (
         <div style={{ width: 600, padding: 20 }}>
-            <Form items={items} labelAlign={'left'} />
+            <Form
+                items={items}
+                labelAlign={'left'}
+                onSubmit={console.log}
+            />
         </div>
     )
 }

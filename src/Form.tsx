@@ -55,12 +55,10 @@ export function Form (props: FormProps) {
 
         if (newValidationResult.result) {
             if (props.onSubmit) props.onSubmit(formValues)
-            setValidationResult({ result: false, errors: {} })
             setFormValues(createFormValues(items))
-        } else {
-            setValidationResult(newValidationResult)
         }
 
+        setValidationResult(newValidationResult)
         setValidateCount(validateCount + 1)
     }
 
@@ -97,7 +95,7 @@ export function Form (props: FormProps) {
                 errors
             }
         }, {
-            result: false,
+            result: true,
             errors: {}
         })
     }
