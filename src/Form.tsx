@@ -1,12 +1,28 @@
 import './index.less'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty } from 'antd'
 import classnames from 'classnames'
 import { FormItem, FormValues, FormItemType, FormProps, ValidationResult,
     SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem } from './types'
 
+const determineDefaultValue = (item: FormItem) => {
+    switch (item.itemType) {
+        case FormItemType.NUMBER:
+            return item.defaultValue || item.min || 0
+        case FormItemType.RADIO:
+            return item.defaultValue || item.options[0] && item.options[0].value || ''
+        case FormItemType.CHECKBOX:
+            return item.defaultValue || []
+        case FormItemType.SELECT:
+            return item.defaultValue || item.options[0] && item.options[0].value || ''
+        default:
+            // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO
+            return item.defaultValue || ''
+    }
+}
+
 const createFormValues = (items: FormItem[]): FormValues => {
-    const values = items.reduce((values: { [key: string]: string|string[] }, item: FormItem) => {
+    const values = items.reduce((values: { [key: string]: any }, item: FormItem) => {
         if ([
             FormItemType.INPUT,
             FormItemType.PASSWORD,
@@ -18,7 +34,7 @@ const createFormValues = (items: FormItem[]): FormValues => {
         ].indexOf(item.itemType) > -1) {
             return {
                 ...values,
-                [item.name]: (item as any).defaultValue
+                [item.name]: determineDefaultValue(item)
             }
         }
 
@@ -43,10 +59,16 @@ const shouldValidateRegExp = (item: FormItem) => [
 ].indexOf(item.itemType) > -1
 
 export function Form (props: FormProps) {
-    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'left', labelWidth = 100 } = props
+    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'left', labelWidth = 100, submitText = '提交', resetText = '重置' } = props
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
+
+    useEffect(() => {
+        setFormValues(createFormValues(items))
+        setValidationResult({ result: false, errors: {} })
+        setValidateCount(0)
+    }, [items])
 
     function onSubmit () {
         // console.log(items, formValues)
@@ -188,28 +210,29 @@ export function Form (props: FormProps) {
 
         case FormItemType.NUMBER:
             const numberItem = item as NumberItem
+            const { min = 0, max = 100, unit = '' } = numberItem
 
             return (
                 <InputNumber
                     style={{width: '100%'}}
                     value={formValues[numberItem.name] as number}
                     onChange={value => {
-                        value = value || numberItem.min
+                        value = value || min
 
                         setFormValues({
                             ...formValues,
                             [numberItem.name]: value
                         })
                     }}
-                    min={numberItem.min}
-                    max={numberItem.max}
+                    min={min}
+                    max={max}
                     formatter={value => {
-                        if (!value) return `${numberItem.min} ${numberItem.unit}`
-                        return `${value} ${numberItem.unit}`
+                        if (!value) return `${min} ${unit}`
+                        return `${value} ${unit}`
                     }}
                     parser={value => {
-                        if (!value) return Number(numberItem.min)
-                        return Number(value.replace(` ${numberItem.unit}`, ''))
+                        if (!value) return Number(min)
+                        return Number(value.replace(` ${unit}`, ''))
                     }}
                 />
             )
@@ -219,6 +242,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Input.Password
+                    prefix={passwordItem.prefix || null}
                     value={formValues[passwordItem.name]}
                     onChange={e => {
                         setFormValues({
@@ -235,6 +259,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Input
+                    prefix={inputItem.prefix || null}
                     value={formValues[inputItem.name]}
                     onChange={e => {
                         setFormValues({
@@ -294,8 +319,8 @@ export function Form (props: FormProps) {
             <Divider className='ef-divider' />
 
             <div style={{ paddingLeft: labelWidth }}>
-                <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>提 交</Button>
-                <Button type="default" onClick={() => setFormValues(createFormValues(items))} style={{ width: 90 }}>重 置</Button>
+                <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>{submitText}</Button>
+                <Button type="default" onClick={() => setFormValues(createFormValues(items))} style={{ width: 90 }}>{resetText}</Button>
             </div>
         </div>
     )

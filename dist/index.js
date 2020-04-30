@@ -14,7 +14,7 @@ import 'antd/es/checkbox/style';
 import _Checkbox from 'antd/es/checkbox';
 import 'antd/es/select/style';
 import _Select from 'antd/es/select';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 
 function _defineProperty(obj, key, value) {
@@ -164,10 +164,30 @@ var FormItemType;
   FormItemType["SELECT"] = "select";
 })(FormItemType || (FormItemType = {}));
 
+var determineDefaultValue = function determineDefaultValue(item) {
+  switch (item.itemType) {
+    case FormItemType.NUMBER:
+      return item.defaultValue || item.min || 0;
+
+    case FormItemType.RADIO:
+      return item.defaultValue || item.options[0] && item.options[0].value || '';
+
+    case FormItemType.CHECKBOX:
+      return item.defaultValue || [];
+
+    case FormItemType.SELECT:
+      return item.defaultValue || item.options[0] && item.options[0].value || '';
+
+    default:
+      // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO
+      return item.defaultValue || '';
+  }
+};
+
 var createFormValues = function createFormValues(items) {
   var values = items.reduce(function (values, item) {
     if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT].indexOf(item.itemType) > -1) {
-      return _objectSpread2(_objectSpread2({}, values), {}, _defineProperty({}, item.name, item.defaultValue));
+      return _objectSpread2(_objectSpread2({}, values), {}, _defineProperty({}, item.name, determineDefaultValue(item)));
     }
 
     return values;
@@ -193,7 +213,11 @@ function Form(props) {
       _props$labelAlign = props.labelAlign,
       labelAlign = _props$labelAlign === void 0 ? 'left' : _props$labelAlign,
       _props$labelWidth = props.labelWidth,
-      labelWidth = _props$labelWidth === void 0 ? 100 : _props$labelWidth;
+      labelWidth = _props$labelWidth === void 0 ? 100 : _props$labelWidth,
+      _props$submitText = props.submitText,
+      submitText = _props$submitText === void 0 ? '提交' : _props$submitText,
+      _props$resetText = props.resetText,
+      resetText = _props$resetText === void 0 ? '重置' : _props$resetText;
 
   var _useState = useState(createFormValues(items)),
       _useState2 = _slicedToArray(_useState, 2),
@@ -212,6 +236,15 @@ function Form(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       validateCount = _useState6[0],
       setValidateCount = _useState6[1];
+
+  useEffect(function () {
+    setFormValues(createFormValues(items));
+    setValidationResult({
+      result: false,
+      errors: {}
+    });
+    setValidateCount(0);
+  }, [items]);
 
   function onSubmit() {
     // console.log(items, formValues)
@@ -326,30 +359,37 @@ function Form(props) {
 
       case FormItemType.NUMBER:
         var numberItem = item;
+        var _numberItem$min = numberItem.min,
+            min = _numberItem$min === void 0 ? 0 : _numberItem$min,
+            _numberItem$max = numberItem.max,
+            max = _numberItem$max === void 0 ? 100 : _numberItem$max,
+            _numberItem$unit = numberItem.unit,
+            unit = _numberItem$unit === void 0 ? '' : _numberItem$unit;
         return /*#__PURE__*/React.createElement(_InputNumber, {
           style: {
             width: '100%'
           },
           value: formValues[numberItem.name],
           onChange: function onChange(value) {
-            value = value || numberItem.min;
+            value = value || min;
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, numberItem.name, value)));
           },
-          min: numberItem.min,
-          max: numberItem.max,
+          min: min,
+          max: max,
           formatter: function formatter(value) {
-            if (!value) return "".concat(numberItem.min, " ").concat(numberItem.unit);
-            return "".concat(value, " ").concat(numberItem.unit);
+            if (!value) return "".concat(min, " ").concat(unit);
+            return "".concat(value, " ").concat(unit);
           },
           parser: function parser(value) {
-            if (!value) return Number(numberItem.min);
-            return Number(value.replace(" ".concat(numberItem.unit), ''));
+            if (!value) return Number(min);
+            return Number(value.replace(" ".concat(unit), ''));
           }
         });
 
       case FormItemType.PASSWORD:
         var passwordItem = item;
         return /*#__PURE__*/React.createElement(_Input.Password, {
+          prefix: passwordItem.prefix || null,
           value: formValues[passwordItem.name],
           onChange: function onChange(e) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, passwordItem.name, e.target.value)));
@@ -360,6 +400,7 @@ function Form(props) {
       default:
         var inputItem = item;
         return /*#__PURE__*/React.createElement(_Input, {
+          prefix: inputItem.prefix || null,
           value: formValues[inputItem.name],
           onChange: function onChange(e) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, inputItem.name, e.target.value)));
@@ -411,7 +452,7 @@ function Form(props) {
       width: 90,
       marginRight: 16
     }
-  }, "\u63D0 \u4EA4"), /*#__PURE__*/React.createElement(_Button, {
+  }, submitText), /*#__PURE__*/React.createElement(_Button, {
     type: "default",
     onClick: function onClick() {
       return setFormValues(createFormValues(items));
@@ -419,7 +460,7 @@ function Form(props) {
     style: {
       width: 90
     }
-  }, "\u91CD \u7F6E")));
+  }, resetText)));
 }
 
 export { Form, FormItemType };

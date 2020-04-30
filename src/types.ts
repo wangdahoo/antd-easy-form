@@ -1,3 +1,16 @@
+import { ReactNode } from "react"
+
+export interface FormProps {
+    items?: FormItem[]
+    formWidth?: number
+    formWidthUnit?: '%' | 'px'
+    labelAlign?: 'left' | 'right' | 'top'
+    labelWidth?: number
+    submitText?: string
+    onSubmit?: (values: FormValues) => void | Promise<void>
+    resetText?: string
+}
+
 export enum FormItemType {
     INPUT = 'input',
     PASSWORD = 'password',
@@ -12,39 +25,41 @@ export type InputItem = {
     name: string
     itemType: FormItemType.INPUT
     labelText: string
-    placeholder: string
-    defaultValue: string
-    required: boolean
-    re?: RegExp
+    placeholder?: string
+    defaultValue?: string
+    required?: boolean
+    re?: RegExp,
+    prefix?: ReactNode
 }
 
 export type PasswordItem = {
     name: string
     itemType: FormItemType.PASSWORD
     labelText: string
-    placeholder: string
-    defaultValue: string
-    required: boolean
+    placeholder?: string
+    defaultValue?: string
+    required?: boolean
     re?: RegExp
+    prefix?: ReactNode
 }
 
 export type NumberItem = {
     name: string
     itemType: FormItemType.NUMBER
     labelText: string
-    defaultValue: number
-    min: number
-    max: number
-    unit: string
+    defaultValue?: number
+    min?: number
+    max?: number
+    unit?: string
 }
 
 export type TextareaItem = {
     name: string
     itemType: FormItemType.TEXTAREA
     labelText: string
-    placeholder: string
-    defaultValue: string
-    required: boolean
+    placeholder?: string
+    defaultValue?: string
+    required?: boolean
     re?: RegExp
 }
 
@@ -57,7 +72,7 @@ export type CheckboxItem = {
         text: string
     }[]
     defaultValue: (string | number)[]
-    required: boolean
+    required?: boolean
 }
 
 export type RadioItem = {
@@ -70,7 +85,7 @@ export type RadioItem = {
     }[]
     defaultValue: string | number
     buttonStyle: 'outline' | 'solid'
-    required: boolean
+    required?: boolean
 }
 
 export type SelectItem = {
@@ -81,19 +96,10 @@ export type SelectItem = {
         value: string | number
         text: string
     }[]
-    defaultValue: string | number
+    defaultValue?: string | number
 }
 
 export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem
-
-export interface FormProps {
-    items?: FormItem[]
-    formWidth?: number
-    formWidthUnit?: '%' | 'px'
-    labelAlign?: 'left' | 'right' | 'top'
-    labelWidth?: number
-    onSubmit?: (values: FormValues) => void | Promise<void>
-}
 
 export type FormValues = {
     [key: string]: string | string[] | number
