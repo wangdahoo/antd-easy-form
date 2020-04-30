@@ -121,3 +121,9 @@ export default function App (props) {
 ### FormItem Reference
 
 [here](https://github.com/wangdahoo/antd-easy-form/blob/master/src/types.ts)
+
+
+### TODOs
+
+- [ ] Uploader Form Item
+- [ ] Custom Form Item
