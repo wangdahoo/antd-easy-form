@@ -1,16 +1,241 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("react"),require("antd"),require("classnames")):"function"==typeof define&&define.amd?define(["exports","react","antd","classnames"],t):t((e=e||self).AntdEasyForm={},e.React,e.antd,e.classnames)}(this,(function(e,t,r,n){"use strict";var a="default"in t?t.default:t;n=n&&Object.prototype.hasOwnProperty.call(n,"default")?n.default:n;
+import React, { useState } from 'react';
+import { Empty, Divider, Button, Input, InputNumber, Radio, Checkbox, Select } from 'antd';
+import classnames from 'classnames';
+
 /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
 
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
 
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
-    ***************************************************************************** */
-var o,m=function(){return(m=Object.assign||function(e){for(var t,r=1,n=arguments.length;r<n;r++)for(var a in t=arguments[r])Object.prototype.hasOwnProperty.call(t,a)&&(e[a]=t[a]);return e}).apply(this,arguments)};(o=e.FormItemType||(e.FormItemType={})).INPUT="input",o.PASSWORD="password",o.NUMBER="number",o.TEXTAREA="textarea",o.CHECKBOX="checkbox",o.RADIO="radio",o.SELECT="select";var l=function(t){return t.reduce((function(t,r){var n;return[e.FormItemType.INPUT,e.FormItemType.PASSWORD,e.FormItemType.NUMBER,e.FormItemType.TEXTAREA,e.FormItemType.RADIO,e.FormItemType.CHECKBOX,e.FormItemType.SELECT].indexOf(r.itemType)>-1?m(m({},t),((n={})[r.name]=r.defaultValue,n)):t}),{})};e.Form=function(o){var u=o.items,i=void 0===u?[]:u,c=o.formWidth,p=void 0===c?100:c,s=o.formWidthUnit,f=void 0===s?"%":s,y=o.labelAlign,d=void 0===y?"left":y,T=o.labelWidth,v=void 0===T?100:T,E=t.useState(l(i)),I=E[0],h=E[1],F=t.useState({result:!1,errors:{}}),A=F[0],O=F[1],g=t.useState(0),R=g[0],S=g[1];return 0===i.length?a.createElement(r.Empty,null):a.createElement("div",{className:"ef-form",style:{width:""+p+f}},i.map((function(t,o){var l=t.itemType;if([e.FormItemType.INPUT,e.FormItemType.PASSWORD,e.FormItemType.NUMBER,e.FormItemType.TEXTAREA,e.FormItemType.RADIO,e.FormItemType.CHECKBOX,e.FormItemType.SELECT].indexOf(l)>-1){var u=A.errors[t.name];return a.createElement("div",{className:"ef-form-item",key:o},a.createElement("div",{className:n("ef-form-item-label","top"===d?"label-standalone":""),style:m({width:v},"top"!==d?{textAlign:d}:{})},t.labelText),a.createElement("div",{className:"ef-form-item-content"},function(t){switch(t.itemType){case e.FormItemType.SELECT:var n=t;return a.createElement(r.Select,{value:I[n.name],onChange:function(e){var t;h(m(m({},I),((t={})[n.name]=e,t)))},style:{width:"100%"}},n.options.map((function(e,t){return a.createElement(r.Select.Option,{key:t,value:e.value},e.text)})));case e.FormItemType.CHECKBOX:var o=t;return a.createElement(r.Checkbox.Group,{value:I[o.name],onChange:function(e){var t;h(m(m({},I),((t={})[o.name]=e,t)))}},o.options.map((function(e,t){return a.createElement(r.Checkbox,{key:t,value:e.value},e.text)})));case e.FormItemType.RADIO:var l=t;return a.createElement(r.Radio.Group,{value:I[l.name],onChange:function(e){var t;h(m(m({},I),((t={})[l.name]=e.target.value,t)))},buttonStyle:l.buttonStyle},l.options.map((function(e,t){return a.createElement(r.Radio.Button,{key:t,value:e.value},e.text)})));case e.FormItemType.TEXTAREA:var u=t;return a.createElement(r.Input.TextArea,{value:I[u.name],onChange:function(e){var t;h(m(m({},I),((t={})[u.name]=e.target.value,t)))},placeholder:u.placeholder});case e.FormItemType.NUMBER:var i=t;return a.createElement(r.InputNumber,{style:{width:"100%"},value:I[i.name],onChange:function(e){var t;e=e||i.min,h(m(m({},I),((t={})[i.name]=e,t)))},min:i.min,max:i.max,formatter:function(e){return e?e+" "+i.unit:i.min+" "+i.unit},parser:function(e){return Number(e?e.replace(" "+i.unit,""):i.min)}});case e.FormItemType.PASSWORD:var c=t;return a.createElement(r.Input.Password,{value:I[c.name],onChange:function(e){var t;h(m(m({},I),((t={})[c.name]=e.target.value,t)))},placeholder:c.placeholder});default:var p=t;return a.createElement(r.Input,{value:I[p.name],onChange:function(e){var t;h(m(m({},I),((t={})[p.name]=e.target.value,t)))},placeholder:p.placeholder})}}(t),a.createElement("div",{className:"ef-err-msg"},u)))}return null})),a.createElement(r.Divider,{className:"ef-divider"}),a.createElement("div",{style:{paddingLeft:v}},a.createElement(r.Button,{type:"primary",onClick:function(){var t=function(t,r){return t.reduce((function(t,n){var a=t.result,o=t.errors,m=n,l=m.name,u=m.labelText,i=r[l];(function(t){return[e.FormItemType.INPUT,e.FormItemType.PASSWORD,e.FormItemType.TEXTAREA,e.FormItemType.CHECKBOX,e.FormItemType.RADIO].indexOf(t.itemType)>-1}(n)&&n.required&&("string"==typeof i&&""===i||"[object Array]"===Object.prototype.toString.call(i)&&0===i.length)&&(o[l]=u+"为必填项",a=!1),function(t){return[e.FormItemType.INPUT,e.FormItemType.PASSWORD,e.FormItemType.TEXTAREA].indexOf(t.itemType)>-1}(n)&&n.re&&n.re instanceof RegExp&&"string"==typeof i)&&(n.re.test(i)||o[l]||(o[l]=u+"格式不正确",a=!1));return{result:a,errors:o}}),{result:!0,errors:{}})}(i,I);console.log(t),t.result&&(o.onSubmit&&o.onSubmit(I),h(l(i))),O(t),S(R+1)},style:{width:90,marginRight:16}},"提 交"),a.createElement(r.Button,{type:"default",onClick:function(){return h(l(i))},style:{width:90}},"重 置")))},Object.defineProperty(e,"__esModule",{value:!0})}));
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = ".ef-form {\n  min-height: 100%;\n  background-color: #fff;\n}\n.ef-form .ef-form-item {\n  display: flex;\n  margin: 0 0 4px 0;\n}\n.ef-form .ef-form-item.label-standalone {\n  flex-direction: column;\n}\n.ef-form .ef-form-item.label-standalone .ef-form-item-label {\n  flex: 1;\n  text-align: left;\n}\n.ef-form .ef-form-item-label {\n  font-size: 14px;\n  line-height: 32px;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.ef-form .ef-form-item-label:after {\n  content: '：';\n}\n.ef-form .ef-form-item-content {\n  flex: 1;\n}\n.ef-form .ef-form-item-content > .ant-checkbox-group {\n  line-height: 32px;\n}\n.ef-form .ef-form-item.ef-form-item-text {\n  display: block;\n}\n.ef-form .ef-form-item .ef-err-msg {\n  padding: 0;\n  height: 20px;\n  font-size: 13px;\n  line-height: 20px;\n  color: #f5222d;\n}\n.ef-form .ef-divider {\n  margin: 0 0 18px 0;\n}\n";
+styleInject(css_248z);
+
+var FormItemType;
+(function (FormItemType) {
+    FormItemType["INPUT"] = "input";
+    FormItemType["PASSWORD"] = "password";
+    FormItemType["NUMBER"] = "number";
+    FormItemType["TEXTAREA"] = "textarea";
+    FormItemType["CHECKBOX"] = "checkbox";
+    FormItemType["RADIO"] = "radio";
+    FormItemType["SELECT"] = "select";
+})(FormItemType || (FormItemType = {}));
+
+var createFormValues = function (items) {
+    var values = items.reduce(function (values, item) {
+        var _a;
+        if ([
+            FormItemType.INPUT,
+            FormItemType.PASSWORD,
+            FormItemType.NUMBER,
+            FormItemType.TEXTAREA,
+            FormItemType.RADIO,
+            FormItemType.CHECKBOX,
+            FormItemType.SELECT
+        ].indexOf(item.itemType) > -1) {
+            return __assign(__assign({}, values), (_a = {}, _a[item.name] = item.defaultValue, _a));
+        }
+        return values;
+    }, {});
+    return values;
+};
+var shouldValidateRequired = function (item) { return [
+    FormItemType.INPUT,
+    FormItemType.PASSWORD,
+    FormItemType.TEXTAREA,
+    FormItemType.CHECKBOX,
+    FormItemType.RADIO
+].indexOf(item.itemType) > -1; };
+var shouldValidateRegExp = function (item) { return [
+    FormItemType.INPUT,
+    FormItemType.PASSWORD,
+    FormItemType.TEXTAREA
+].indexOf(item.itemType) > -1; };
+function Form(props) {
+    var _a = props.items, items = _a === void 0 ? [] : _a, _b = props.formWidth, formWidth = _b === void 0 ? 100 : _b, _c = props.formWidthUnit, formWidthUnit = _c === void 0 ? '%' : _c, _d = props.labelAlign, labelAlign = _d === void 0 ? 'left' : _d, _e = props.labelWidth, labelWidth = _e === void 0 ? 100 : _e;
+    var _f = useState(createFormValues(items)), formValues = _f[0], setFormValues = _f[1];
+    var _g = useState({ result: false, errors: {} }), validationResult = _g[0], setValidationResult = _g[1];
+    var _h = useState(0), validateCount = _h[0], setValidateCount = _h[1];
+    function onSubmit() {
+        // console.log(items, formValues)
+        var newValidationResult = validate(items, formValues);
+        // console.log(newValidationResult)
+        if (newValidationResult.result) {
+            if (props.onSubmit)
+                props.onSubmit(formValues);
+            setFormValues(createFormValues(items));
+        }
+        setValidationResult(newValidationResult);
+        setValidateCount(validateCount + 1);
+    }
+    function validate(items, formValues) {
+        return items.reduce(function (_a, item) {
+            var result = _a.result, errors = _a.errors;
+            var _b = item, name = _b.name, labelText = _b.labelText;
+            var value = formValues[name];
+            // 校验必填项
+            if (shouldValidateRequired(item) && item.required) {
+                if (
+                // 空字符串
+                (typeof value === 'string' && value === '') ||
+                    // 空数组
+                    (Object.prototype.toString.call(value) === '[object Array]' && value.length === 0)) {
+                    errors[name] = labelText + "\u4E3A\u5FC5\u586B\u9879";
+                    result = false;
+                }
+            }
+            // 有正则表达式的话，校验正则表单时
+            if (shouldValidateRegExp(item) && item.re && item.re instanceof RegExp && typeof value === 'string') {
+                var re = item.re;
+                if (!re.test(value) && !errors[name]) {
+                    errors[name] = labelText + "\u683C\u5F0F\u4E0D\u6B63\u786E";
+                    result = false;
+                }
+            }
+            return {
+                result: result,
+                errors: errors
+            };
+        }, {
+            result: true,
+            errors: {}
+        });
+    }
+    var renderFormItem = function (item) {
+        var itemType = item.itemType;
+        switch (itemType) {
+            case FormItemType.SELECT:
+                var selectItem_1 = item;
+                return (React.createElement(Select, { value: formValues[selectItem_1.name], onChange: function (value) {
+                        var _a;
+                        setFormValues(__assign(__assign({}, formValues), (_a = {}, _a[selectItem_1.name] = value, _a)));
+                    }, style: { width: '100%' } }, selectItem_1.options.map(function (option, optionIndex) { return (React.createElement(Select.Option, { key: optionIndex, value: option.value }, option.text)); })));
+            case FormItemType.CHECKBOX:
+                var checkboxItem_1 = item;
+                return (React.createElement(Checkbox.Group, { value: formValues[checkboxItem_1.name], onChange: function (value) {
+                        var _a;
+                        setFormValues(__assign(__assign({}, formValues), (_a = {}, _a[checkboxItem_1.name] = value, _a)));
+                    } }, checkboxItem_1.options.map(function (option, optionIndex) { return (React.createElement(Checkbox, { key: optionIndex, value: option.value }, option.text)); })));
+            case FormItemType.RADIO:
+                var radioItem_1 = item;
+                return (React.createElement(Radio.Group, { value: formValues[radioItem_1.name], onChange: function (e) {
+                        var _a;
+                        setFormValues(__assign(__assign({}, formValues), (_a = {}, _a[radioItem_1.name] = e.target.value, _a)));
+                    }, buttonStyle: radioItem_1.buttonStyle }, radioItem_1.options.map(function (option, optionIndex) { return (React.createElement(Radio.Button, { key: optionIndex, value: option.value }, option.text)); })));
+            case FormItemType.TEXTAREA:
+                var textareaItem_1 = item;
+                return (React.createElement(Input.TextArea, { value: formValues[textareaItem_1.name], onChange: function (e) {
+                        var _a;
+                        setFormValues(__assign(__assign({}, formValues), (_a = {}, _a[textareaItem_1.name] = e.target.value, _a)));
+                    }, placeholder: textareaItem_1.placeholder || "\u8BF7\u8F93\u5165" + textareaItem_1.labelText }));
+            case FormItemType.NUMBER:
+                var numberItem_1 = item;
+                return (React.createElement(InputNumber, { style: { width: '100%' }, value: formValues[numberItem_1.name], onChange: function (value) {
+                        var _a;
+                        value = value || numberItem_1.min;
+                        setFormValues(__assign(__assign({}, formValues), (_a = {}, _a[numberItem_1.name] = value, _a)));
+                    }, min: numberItem_1.min, max: numberItem_1.max, formatter: function (value) {
+                        if (!value)
+                            return numberItem_1.min + " " + numberItem_1.unit;
+                        return value + " " + numberItem_1.unit;
+                    }, parser: function (value) {
+                        if (!value)
+                            return Number(numberItem_1.min);
+                        return Number(value.replace(" " + numberItem_1.unit, ''));
+                    } }));
+            case FormItemType.PASSWORD:
+                var passwordItem_1 = item;
+                return (React.createElement(Input.Password, { value: formValues[passwordItem_1.name], onChange: function (e) {
+                        var _a;
+                        setFormValues(__assign(__assign({}, formValues), (_a = {}, _a[passwordItem_1.name] = e.target.value, _a)));
+                    }, placeholder: passwordItem_1.placeholder || "\u8BF7\u8F93\u5165" + passwordItem_1.labelText }));
+            default:
+                var inputItem_1 = item;
+                return (React.createElement(Input, { value: formValues[inputItem_1.name], onChange: function (e) {
+                        var _a;
+                        setFormValues(__assign(__assign({}, formValues), (_a = {}, _a[inputItem_1.name] = e.target.value, _a)));
+                    }, placeholder: inputItem_1.placeholder || "\u8BF7\u8F93\u5165" + inputItem_1.labelText }));
+        }
+    };
+    if (items.length === 0)
+        return React.createElement(Empty, null);
+    return (React.createElement("div", { className: "ef-form", style: {
+            width: "" + formWidth + formWidthUnit
+        } },
+        items.map(function (item, index) {
+            var itemType = item.itemType;
+            if ([
+                FormItemType.INPUT,
+                FormItemType.PASSWORD,
+                FormItemType.NUMBER,
+                FormItemType.TEXTAREA,
+                FormItemType.RADIO,
+                FormItemType.CHECKBOX,
+                FormItemType.SELECT
+            ].indexOf(itemType) > -1) {
+                var errMsg = validationResult.errors[item.name];
+                return (React.createElement("div", { className: "ef-form-item", key: index },
+                    React.createElement("div", { className: classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : ''), style: __assign({ width: labelWidth }, (labelAlign !== 'top' ? {
+                            textAlign: labelAlign
+                        } : {})) }, item.labelText),
+                    React.createElement("div", { className: 'ef-form-item-content' },
+                        renderFormItem(item),
+                        React.createElement("div", { className: "ef-err-msg" }, errMsg))));
+            }
+            return null;
+        }),
+        React.createElement(Divider, { className: 'ef-divider' }),
+        React.createElement("div", { style: { paddingLeft: labelWidth } },
+            React.createElement(Button, { type: "primary", onClick: onSubmit, style: { width: 90, marginRight: 16 } }, "\u63D0 \u4EA4"),
+            React.createElement(Button, { type: "default", onClick: function () { return setFormValues(createFormValues(items)); }, style: { width: 90 } }, "\u91CD \u7F6E"))));
+}
+
+export { Form, FormItemType };

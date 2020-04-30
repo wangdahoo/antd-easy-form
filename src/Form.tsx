@@ -51,7 +51,7 @@ export function Form (props: FormProps) {
     function onSubmit () {
         // console.log(items, formValues)
         const newValidationResult = validate(items, formValues)
-        console.log(newValidationResult)
+        // console.log(newValidationResult)
 
         if (newValidationResult.result) {
             if (props.onSubmit) props.onSubmit(formValues)
@@ -182,7 +182,7 @@ export function Form (props: FormProps) {
                             [textareaItem.name]: e.target.value
                         })
                     }}
-                    placeholder={textareaItem.placeholder}
+                    placeholder={textareaItem.placeholder || `请输入${textareaItem.labelText}`}
                 />
             )
 
@@ -226,7 +226,7 @@ export function Form (props: FormProps) {
                             [passwordItem.name]: e.target.value
                         })
                     }}
-                    placeholder={passwordItem.placeholder}
+                    placeholder={passwordItem.placeholder || `请输入${passwordItem.labelText}`}
                 />
             )
 
@@ -242,7 +242,7 @@ export function Form (props: FormProps) {
                             [inputItem.name]: e.target.value
                         })
                     }}
-                    placeholder={inputItem.placeholder}
+                    placeholder={inputItem.placeholder || `请输入${inputItem.labelText}`}
                 />
             )
         }

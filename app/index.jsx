@@ -8,7 +8,7 @@ import zhCN from 'antd/es/locale/zh_CN'
 
 ReactDOM.render(
   <ConfigProvider locale={zhCN}>
-    <App name="Tom" />
+    <App />
   </ConfigProvider>,
   document.getElementById('root')
 )

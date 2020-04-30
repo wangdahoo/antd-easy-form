@@ -19,7 +19,7 @@ module.exports = [
         input,
         output: [
             {
-                dir: 'dist',
+                dir: 'dist/umd',
                 format: 'umd',
                 name: 'AntdEasyForm',
                 globals: {
@@ -47,7 +47,7 @@ module.exports = [
         input,
         output: [
             {
-                dir: 'dist/esm',
+                dir: 'dist',
                 format: 'es'
             }
         ],
