@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement, Dispatch, SetStateAction } from "react"
+import { ReactNode, ReactElement, CSSProperties } from "react"
 
 export interface FormProps {
     items?: FormItem[]
@@ -9,6 +9,8 @@ export interface FormProps {
     submitText?: string
     onSubmit?: (values: FormValues) => void | Promise<void>
     resetText?: string
+    style?: CSSProperties
+    className?: string
 }
 
 export enum FormItemType {

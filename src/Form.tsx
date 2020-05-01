@@ -301,7 +301,8 @@ export function Form (props: FormProps) {
     if (items.length === 0) return <Empty />
 
     return (
-        <div className="ef-form" style={{
+        <div className={classnames(props.className || '', 'ef-form')} style={{
+            ...(props.style || {}),
             width: `${formWidth}${formWidthUnit}`
         }}>
             {items.map((item, index) => {

@@ -497,10 +497,10 @@ function Form(props) {
 
   if (items.length === 0) return /*#__PURE__*/React.createElement(_Empty, null);
   return /*#__PURE__*/React.createElement("div", {
-    className: "ef-form",
-    style: {
+    className: classnames(props.className || '', 'ef-form'),
+    style: _objectSpread2(_objectSpread2({}, props.style || {}), {}, {
       width: "".concat(formWidth).concat(formWidthUnit)
-    }
+    })
   }, items.map(function (item, index) {
     var itemType = item.itemType;
 
