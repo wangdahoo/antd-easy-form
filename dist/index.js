@@ -162,7 +162,74 @@ var FormItemType;
   FormItemType["CHECKBOX"] = "checkbox";
   FormItemType["RADIO"] = "radio";
   FormItemType["SELECT"] = "select";
+  FormItemType["CUSTOM"] = "custom";
 })(FormItemType || (FormItemType = {}));
+
+// utilities
+function isObject(target) {
+  return Object.prototype.toString.call(target) === '[object Object]';
+}
+
+function isArray(target) {
+  return Object.prototype.toString.call(target) === '[object Array]';
+}
+
+function isDate(target) {
+  return Object.prototype.toString.call(target) === '[object Date]';
+}
+
+function isRegExp(target) {
+  return Object.prototype.toString.call(target) === '[object RegExp]';
+}
+/**
+ * DeepClone 算法
+ */
+
+
+function clone(source) {
+  if (typeof source === 'function') throw new TypeError('source should not be a function.');
+
+  if (!isObject(source)) {
+    // 如果是 number/string/boolean/null/undefined 的话，直接返回就好
+    return source;
+  }
+
+  var target = {};
+
+  for (var i in source) {
+    if (source.hasOwnProperty(i)) {
+      if (isDate(source[i])) {
+        target[i] = new Date(source[i].getTime());
+      } else if (isRegExp(source[i])) {
+        var flags = [];
+
+        if (source[i].global) {
+          flags.push('g');
+        }
+
+        if (source[i].ignoreCase) {
+          flags.push('i');
+        }
+
+        if (source[i].multiline) {
+          flags.push('m');
+        }
+
+        target[i] = new RegExp(source[i].source, flags.join(''));
+      } else if (isArray(source[i])) {
+        target[i] = source[i].map(function (j) {
+          return clone(j);
+        });
+      } else if (isObject(source[i])) {
+        target[i] = clone(source[i]);
+      } else {
+        target[i] = source[i];
+      }
+    }
+  }
+
+  return target;
+}
 
 var determineDefaultValue = function determineDefaultValue(item) {
   switch (item.itemType) {
@@ -179,14 +246,14 @@ var determineDefaultValue = function determineDefaultValue(item) {
       return item.defaultValue || item.options[0] && item.options[0].value || '';
 
     default:
-      // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO
+      // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CUSTOM
       return item.defaultValue || '';
   }
 };
 
 var createFormValues = function createFormValues(items) {
   var values = items.reduce(function (values, item) {
-    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT].indexOf(item.itemType) > -1) {
+    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.CUSTOM].indexOf(item.itemType) > -1) {
       return _objectSpread2(_objectSpread2({}, values), {}, _defineProperty({}, item.name, determineDefaultValue(item)));
     }
 
@@ -237,6 +304,20 @@ function Form(props) {
       validateCount = _useState6[0],
       setValidateCount = _useState6[1];
 
+  var customItemStates = items.filter(function (item) {
+    return item.itemType === FormItemType.CUSTOM;
+  }).reduce(function (states, item) {
+    states[item.name] = Object.create(null);
+    Object.defineProperty(states[item.name], 'value', {
+      get: function get() {
+        return clone(formValues[item.name]);
+      },
+      set: function set(value) {
+        formValues[item.name] = value;
+      }
+    });
+    return states;
+  }, Object.create(null));
   useEffect(function () {
     setFormValues(createFormValues(items));
     setValidationResult({
@@ -301,6 +382,10 @@ function Form(props) {
     var itemType = item.itemType;
 
     switch (itemType) {
+      case FormItemType.CUSTOM:
+        var customItem = item;
+        return customItem.render(customItem, customItemStates[customItem.name]);
+
       case FormItemType.SELECT:
         var selectItem = item;
         return /*#__PURE__*/React.createElement(_Select, {
@@ -419,7 +504,7 @@ function Form(props) {
   }, items.map(function (item, index) {
     var itemType = item.itemType;
 
-    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT].indexOf(itemType) > -1) {
+    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.CUSTOM].indexOf(itemType) > -1) {
       var errMsg = validationResult.errors[item.name];
       return /*#__PURE__*/React.createElement("div", {
         className: "ef-form-item",

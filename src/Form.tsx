@@ -1,9 +1,10 @@
 import './index.less'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react'
 import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty } from 'antd'
 import classnames from 'classnames'
 import { FormItem, FormValues, FormItemType, FormProps, ValidationResult,
-    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem } from './types'
+    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem, CustomItem } from './types'
+import { clone } from './deepClone'
 
 const determineDefaultValue = (item: FormItem) => {
     switch (item.itemType) {
@@ -16,7 +17,7 @@ const determineDefaultValue = (item: FormItem) => {
         case FormItemType.SELECT:
             return item.defaultValue || item.options[0] && item.options[0].value || ''
         default:
-            // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO
+            // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CUSTOM
             return item.defaultValue || ''
     }
 }
@@ -30,7 +31,8 @@ const createFormValues = (items: FormItem[]): FormValues => {
             FormItemType.TEXTAREA,
             FormItemType.RADIO,
             FormItemType.CHECKBOX,
-            FormItemType.SELECT
+            FormItemType.SELECT,
+            FormItemType.CUSTOM
         ].indexOf(item.itemType) > -1) {
             return {
                 ...values,
@@ -63,6 +65,24 @@ export function Form (props: FormProps) {
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
+
+    const customItemStates: { [key: string]: any } = items
+        .filter(item => item.itemType === FormItemType.CUSTOM)
+        .reduce((states, item) => {
+            states[item.name] = Object.create(null)
+
+            Object.defineProperty(states[item.name], 'value', {
+                get () {
+                    return clone(formValues[item.name])
+                },
+
+                set (value: any) {
+                    formValues[item.name] = value
+                }
+            })
+
+            return states
+        }, Object.create(null))
 
     useEffect(() => {
         setFormValues(createFormValues(items))
@@ -126,6 +146,11 @@ export function Form (props: FormProps) {
         const { itemType } = item
 
         switch (itemType) {
+
+        case FormItemType.CUSTOM:
+            const customItem = item as CustomItem
+
+            return customItem.render(customItem as Omit<CustomItem, 'render'>, customItemStates[customItem.name])
 
         case FormItemType.SELECT:
             const selectItem = item as SelectItem
@@ -289,7 +314,8 @@ export function Form (props: FormProps) {
                     FormItemType.TEXTAREA,
                     FormItemType.RADIO,
                     FormItemType.CHECKBOX,
-                    FormItemType.SELECT
+                    FormItemType.SELECT,
+                    FormItemType.CUSTOM
                 ].indexOf(itemType) > -1) {
                     const errMsg: string = (validationResult.errors as any)[item.name]
 

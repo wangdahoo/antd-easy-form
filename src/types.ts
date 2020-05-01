@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, ReactElement, Dispatch, SetStateAction } from "react"
 
 export interface FormProps {
     items?: FormItem[]
@@ -18,7 +18,8 @@ export enum FormItemType {
     TEXTAREA = 'textarea',
     CHECKBOX = 'checkbox',
     RADIO = 'radio',
-    SELECT = 'select'
+    SELECT = 'select',
+    CUSTOM = 'custom'
 }
 
 export type InputItem = {
@@ -99,7 +100,16 @@ export type SelectItem = {
     defaultValue?: string | number
 }
 
-export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem
+export type CustomItem = {
+    name: string
+    itemType: FormItemType.CUSTOM
+    labelText: string
+    defaultValue: any
+    render: (item: Omit<CustomItem, 'render'>, state: any) => ReactElement
+    extra?: any,
+}
+
+export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem | CustomItem
 
 export type FormValues = {
     [key: string]: string | string[] | number

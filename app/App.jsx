@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Tabs, Divider } from 'antd'
+import { Tabs, Divider, Avatar, Button } from 'antd'
 import { UserOutlined, KeyOutlined } from '@ant-design/icons'
 
 // import { Form, FormItemType } from '../dist'
@@ -124,10 +124,49 @@ const registerFormItems = [
         max: 100,
         defaultValue: 10
     },
+    {
+        name: 'avatar',
+        itemType: FormItemType.CUSTOM,
+        labelText: '头像',
+        defaultValue: 2,
+        render: (item, state) => {
+            // the form item
+            console.log(item)
+
+            return <CustomAvatar value={state.value} onChange={newValue => {
+                state.value = newValue
+            }} />
+        },
+        extra: {},
+    }
 ]
 
+function CustomAvatar (props) {
+    const { value } = props
+
+    const names = ['魑', '魅', '魍', '魉']
+    const colors = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae']
+
+    const [index, setIndex] = useState(value)
+
+    function onChange () {
+      const newIndex = index < names.length - 1 ? index + 1: 0
+      setIndex(newIndex)
+      if (props.onChange) props.onChange(newIndex)
+    }
+
+    return (
+        <>
+            <Avatar style={{ backgroundColor: colors[index], verticalAlign: 'middle' }} size="large">
+                {names[index]}
+            </Avatar>
+            <Button size="small" style={{ margin: '0 16px', verticalAlign: 'middle' }} onClick={onChange}>Change</Button>
+        </>
+    )
+}
+
 export default function App (props) {
-    const [items, setItems] = useState(loginFormItems)
+    const [items, setItems] = useState(registerFormItems)
 
     function onChangeTab (key) {
         if (key === 'login') {
@@ -139,7 +178,7 @@ export default function App (props) {
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'register'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
             </Tabs>

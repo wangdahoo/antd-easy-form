@@ -125,5 +125,4 @@ export default function App (props) {
 
 ### TODOs
 
-- [ ] Uploader Form Item
-- [ ] Custom Form Item
+- [x] Custom Form Item
