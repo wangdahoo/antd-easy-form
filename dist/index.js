@@ -1,20 +1,5 @@
-import 'antd/es/button/style';
-import _Button from 'antd/es/button';
-import 'antd/es/divider/style';
-import _Divider from 'antd/es/divider';
-import 'antd/es/empty/style';
-import _Empty from 'antd/es/empty';
-import 'antd/es/input-number/style';
-import _InputNumber from 'antd/es/input-number';
-import 'antd/es/input/style';
-import _Input from 'antd/es/input';
-import 'antd/es/radio/style';
-import _Radio from 'antd/es/radio';
-import 'antd/es/checkbox/style';
-import _Checkbox from 'antd/es/checkbox';
-import 'antd/es/select/style';
-import _Select from 'antd/es/select';
 import React, { useState, useEffect } from 'react';
+import { Empty, Divider, Button, Input, InputNumber, Radio, Checkbox, Select } from 'antd';
 import classnames from 'classnames';
 
 function _defineProperty(obj, key, value) {
@@ -388,7 +373,7 @@ function Form(props) {
 
       case FormItemType.SELECT:
         var selectItem = item;
-        return /*#__PURE__*/React.createElement(_Select, {
+        return /*#__PURE__*/React.createElement(Select, {
           value: formValues[selectItem.name],
           onChange: function onChange(value) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, selectItem.name, value)));
@@ -397,7 +382,7 @@ function Form(props) {
             width: '100%'
           }
         }, selectItem.options.map(function (option, optionIndex) {
-          return /*#__PURE__*/React.createElement(_Select.Option, {
+          return /*#__PURE__*/React.createElement(Select.Option, {
             key: optionIndex,
             value: option.value
           }, option.text);
@@ -405,13 +390,13 @@ function Form(props) {
 
       case FormItemType.CHECKBOX:
         var checkboxItem = item;
-        return /*#__PURE__*/React.createElement(_Checkbox.Group, {
+        return /*#__PURE__*/React.createElement(Checkbox.Group, {
           value: formValues[checkboxItem.name],
           onChange: function onChange(value) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, checkboxItem.name, value)));
           }
         }, checkboxItem.options.map(function (option, optionIndex) {
-          return /*#__PURE__*/React.createElement(_Checkbox, {
+          return /*#__PURE__*/React.createElement(Checkbox, {
             key: optionIndex,
             value: option.value
           }, option.text);
@@ -419,14 +404,14 @@ function Form(props) {
 
       case FormItemType.RADIO:
         var radioItem = item;
-        return /*#__PURE__*/React.createElement(_Radio.Group, {
+        return /*#__PURE__*/React.createElement(Radio.Group, {
           value: formValues[radioItem.name],
           onChange: function onChange(e) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, radioItem.name, e.target.value)));
           },
           buttonStyle: radioItem.buttonStyle
         }, radioItem.options.map(function (option, optionIndex) {
-          return /*#__PURE__*/React.createElement(_Radio.Button, {
+          return /*#__PURE__*/React.createElement(Radio.Button, {
             key: optionIndex,
             value: option.value
           }, option.text);
@@ -434,7 +419,7 @@ function Form(props) {
 
       case FormItemType.TEXTAREA:
         var textareaItem = item;
-        return /*#__PURE__*/React.createElement(_Input.TextArea, {
+        return /*#__PURE__*/React.createElement(Input.TextArea, {
           value: formValues[textareaItem.name],
           onChange: function onChange(e) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, textareaItem.name, e.target.value)));
@@ -450,7 +435,7 @@ function Form(props) {
             max = _numberItem$max === void 0 ? 100 : _numberItem$max,
             _numberItem$unit = numberItem.unit,
             unit = _numberItem$unit === void 0 ? '' : _numberItem$unit;
-        return /*#__PURE__*/React.createElement(_InputNumber, {
+        return /*#__PURE__*/React.createElement(InputNumber, {
           style: {
             width: '100%'
           },
@@ -473,7 +458,7 @@ function Form(props) {
 
       case FormItemType.PASSWORD:
         var passwordItem = item;
-        return /*#__PURE__*/React.createElement(_Input.Password, {
+        return /*#__PURE__*/React.createElement(Input.Password, {
           prefix: passwordItem.prefix || null,
           value: formValues[passwordItem.name],
           onChange: function onChange(e) {
@@ -484,7 +469,7 @@ function Form(props) {
 
       default:
         var inputItem = item;
-        return /*#__PURE__*/React.createElement(_Input, {
+        return /*#__PURE__*/React.createElement(Input, {
           prefix: inputItem.prefix || null,
           value: formValues[inputItem.name],
           onChange: function onChange(e) {
@@ -495,7 +480,7 @@ function Form(props) {
     }
   };
 
-  if (items.length === 0) return /*#__PURE__*/React.createElement(_Empty, null);
+  if (items.length === 0) return /*#__PURE__*/React.createElement(Empty, null);
   return /*#__PURE__*/React.createElement("div", {
     className: classnames(props.className || '', 'ef-form'),
     style: _objectSpread2(_objectSpread2({}, props.style || {}), {}, {
@@ -524,20 +509,20 @@ function Form(props) {
     }
 
     return null;
-  }), /*#__PURE__*/React.createElement(_Divider, {
+  }), /*#__PURE__*/React.createElement(Divider, {
     className: "ef-divider"
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       paddingLeft: labelWidth
     }
-  }, /*#__PURE__*/React.createElement(_Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     type: "primary",
     onClick: onSubmit,
     style: {
       width: 90,
       marginRight: 16
     }
-  }, submitText), /*#__PURE__*/React.createElement(_Button, {
+  }, submitText), /*#__PURE__*/React.createElement(Button, {
     type: "default",
     onClick: function onClick() {
       return setFormValues(createFormValues(items));

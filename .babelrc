@@ -6,13 +6,6 @@
     ],
     "plugins": [
         [
-            "import",
-            {
-                "libraryName": "antd",
-                "libraryDirectory": "es"
-            }
-        ],
-        [
             "@babel/plugin-proposal-export-default-from"
         ]
     ]
