@@ -1,5 +1,5 @@
 import './index.less'
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty } from 'antd'
 import classnames from 'classnames'
 import { FormItem, FormValues, FormItemType, FormProps, ValidationResult,
