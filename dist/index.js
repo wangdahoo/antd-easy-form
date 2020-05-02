@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Empty, Divider, Button, Input, InputNumber, Radio, Checkbox, Select } from 'antd';
+import { Empty, Divider, Button, Input, InputNumber, Radio, Checkbox, Select, DatePicker } from 'antd';
 import classnames from 'classnames';
 
 function _defineProperty(obj, key, value) {
@@ -107,36 +107,6 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
-
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-var css_248z = ".ef-form {\n  min-height: 100%;\n  background-color: #fff;\n  padding: 16px;\n}\n.ef-form .ef-form-item {\n  display: flex;\n  margin: 0 0 4px 0;\n}\n.ef-form .ef-form-item.label-standalone {\n  flex-direction: column;\n}\n.ef-form .ef-form-item.label-standalone .ef-form-item-label {\n  flex: 1;\n  text-align: left;\n}\n.ef-form .ef-form-item-label {\n  font-size: 14px;\n  line-height: 32px;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.ef-form .ef-form-item-label:after {\n  content: '：';\n}\n.ef-form .ef-form-item-content {\n  flex: 1;\n}\n.ef-form .ef-form-item-content > .ant-checkbox-group {\n  line-height: 32px;\n}\n.ef-form .ef-form-item.ef-form-item-text {\n  display: block;\n}\n.ef-form .ef-form-item .ef-err-msg {\n  padding: 0;\n  height: 20px;\n  font-size: 13px;\n  line-height: 20px;\n  color: #f5222d;\n}\n.ef-form .ef-divider {\n  margin: 0 0 18px 0;\n}\n";
-styleInject(css_248z);
-
 var FormItemType;
 
 (function (FormItemType) {
@@ -147,6 +117,8 @@ var FormItemType;
   FormItemType["CHECKBOX"] = "checkbox";
   FormItemType["RADIO"] = "radio";
   FormItemType["SELECT"] = "select";
+  FormItemType["DATEPICKER"] = "datepicker";
+  FormItemType["RANGEPICKER"] = "rangepicker";
   FormItemType["CUSTOM"] = "custom";
 })(FormItemType || (FormItemType = {}));
 
@@ -216,6 +188,10 @@ function clone(source) {
   return target;
 }
 
+var isArray$1 = function isArray(obj) {
+  return Object.prototype.toString.call(obj) === '[object Array]';
+};
+
 var determineDefaultValue = function determineDefaultValue(item) {
   switch (item.itemType) {
     case FormItemType.NUMBER:
@@ -230,6 +206,12 @@ var determineDefaultValue = function determineDefaultValue(item) {
     case FormItemType.SELECT:
       return item.defaultValue || item.options[0] && item.options[0].value || '';
 
+    case FormItemType.DATEPICKER:
+      return null;
+
+    case FormItemType.RANGEPICKER:
+      return [null, null];
+
     default:
       // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CUSTOM
       return item.defaultValue || '';
@@ -238,7 +220,7 @@ var determineDefaultValue = function determineDefaultValue(item) {
 
 var createFormValues = function createFormValues(items) {
   var values = items.reduce(function (values, item) {
-    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.CUSTOM].indexOf(item.itemType) > -1) {
+    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CUSTOM].indexOf(item.itemType) > -1) {
       return _objectSpread2(_objectSpread2({}, values), {}, _defineProperty({}, item.name, determineDefaultValue(item)));
     }
 
@@ -248,7 +230,7 @@ var createFormValues = function createFormValues(items) {
 };
 
 var shouldValidateRequired = function shouldValidateRequired(item) {
-  return [FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.CHECKBOX, FormItemType.RADIO].indexOf(item.itemType) > -1;
+  return [FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.CHECKBOX, FormItemType.RADIO, FormItemType.DATEPICKER, FormItemType.RANGEPICKER].indexOf(item.itemType) > -1;
 };
 
 var shouldValidateRegExp = function shouldValidateRegExp(item) {
@@ -335,9 +317,10 @@ function Form(props) {
       var value = formValues[name]; // 校验必填项
 
       if (shouldValidateRequired(item) && item.required) {
-        if ( // 空字符串
+        if (value == null || value === undefined || // 空字符串
         typeof value === 'string' && value === '' || // 空数组
-        Object.prototype.toString.call(value) === '[object Array]' && value.length === 0) {
+        Object.prototype.toString.call(value) === '[object Array]' && value.length === 0 || // 校验 range picker
+        item.itemType === FormItemType.RANGEPICKER && (isArray$1(value) && value[0] === null && value[1] === null || !isArray$1(value))) {
           errors[name] = "".concat(labelText, "\u4E3A\u5FC5\u586B\u9879");
           result = false;
         }
@@ -370,6 +353,32 @@ function Form(props) {
       case FormItemType.CUSTOM:
         var customItem = item;
         return customItem.render(customItem, customItemStates[customItem.name]);
+
+      case FormItemType.RANGEPICKER:
+        var rangepickerItem = item;
+        return /*#__PURE__*/React.createElement(DatePicker.RangePicker, {
+          style: {
+            width: '100%'
+          },
+          value: formValues[rangepickerItem.name],
+          onChange: function onChange(dates) {
+            setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, rangepickerItem.name, dates)));
+          }
+        });
+
+      case FormItemType.DATEPICKER:
+        var datepickerItem = item;
+        return /*#__PURE__*/React.createElement(DatePicker, {
+          style: {
+            width: '100%'
+          },
+          value: formValues[datepickerItem.name],
+          onChange: function onChange(date) {
+            if (date !== null) {
+              setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, datepickerItem.name, date)));
+            }
+          }
+        });
 
       case FormItemType.SELECT:
         var selectItem = item;
@@ -489,7 +498,7 @@ function Form(props) {
   }, items.map(function (item, index) {
     var itemType = item.itemType;
 
-    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.CUSTOM].indexOf(itemType) > -1) {
+    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CUSTOM].indexOf(itemType) > -1) {
       var errMsg = validationResult.errors[item.name];
       return /*#__PURE__*/React.createElement("div", {
         className: "ef-form-item",

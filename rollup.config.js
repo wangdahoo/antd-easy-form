@@ -10,9 +10,19 @@ const input = './src/index.ts'
 const external = [
     'antd',
     'classnames',
+    'moment',
     'react',
     'react-dom'
 ]
+
+// globals for umd
+const globals = {
+    'antd': 'antd',
+    'classnames': 'classNames',
+    'moment': 'moment',
+    'react': 'React',
+    'react-dom': 'ReactDOM'
+}
 
 const extensions = [ '.js', '.jsx', '.ts', '.tsx' ]
 
@@ -24,6 +34,15 @@ const plugins = [
         extensions,
     }),
     babel({
+        babelrc: false,
+        presets: [
+            '@babel/preset-env',
+            '@babel/preset-react',
+            '@babel/preset-typescript'
+        ],
+        plugins: [
+            '@babel/plugin-proposal-export-default-from'
+        ],
         exclude: 'node_modules/**',
         extensions,
     }),
@@ -37,11 +56,7 @@ export default [
                 dir: 'dist/umd',
                 format: 'umd',
                 name: 'AntdEasyForm',
-                globals: {
-                    'antd': 'antd',
-                    'react': 'React',
-                    'react-dom': 'ReactDOM'
-                }
+                globals
             }
         ],
         plugins: [
@@ -58,6 +73,7 @@ export default [
         ],
         external
     },
+    // esm
     {
         input,
         output: [
@@ -71,7 +87,7 @@ export default [
             postcss({
                 extensions: ['.less'],
                 minimize: false,
-                extract: false,
+                extract: true,
                 plugins: [
                     autoprefixer()
                 ]

@@ -2,7 +2,17 @@ import React, { useState } from 'react'
 import { Tabs, Divider, Avatar, Button } from 'antd'
 import { UserOutlined, KeyOutlined } from '@ant-design/icons'
 
+// 按 esm 的方式引入
+// import '../dist/index.css'
 // import { Form, FormItemType } from '../dist'
+
+// 按 umd 的方式引入
+// import 'antd/dist/antd.css'
+// import '../dist/umd/index.css'
+// import { Form, FormItemType } from '../dist/umd'
+
+// 开发环境
+import '../src/index.less'
 import { Form, FormItemType } from '../src'
 
 const TabPane = Tabs.TabPane
@@ -72,6 +82,12 @@ const registerFormItems = [
         buttonStyle: 'solid'
     },
     {
+        name: 'birthday',
+        itemType: FormItemType.DATEPICKER,
+        labelText: '生日',
+        required: true
+    },
+    {
         name: 'fruits',
         itemType: FormItemType.CHECKBOX,
         labelText: '喜爱的水果',
@@ -123,6 +139,12 @@ const registerFormItems = [
         min: 1,
         max: 100,
         defaultValue: 10
+    },
+    {
+        name: 'worktime',
+        itemType: FormItemType.RANGEPICKER,
+        labelText: '工作时间',
+        required: true
     },
     {
         name: 'avatar',

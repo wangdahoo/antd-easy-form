@@ -1,10 +1,13 @@
 import './index.less'
 import React, { useState, useEffect } from 'react'
-import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty } from 'antd'
+import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty, DatePicker } from 'antd'
 import classnames from 'classnames'
 import { FormItem, FormValues, FormItemType, FormProps, ValidationResult,
-    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem, CustomItem } from './types'
+    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem, CustomItem, DatepickerItem } from './types'
 import { clone } from './deepClone'
+import { Moment } from 'moment'
+
+const isArray = (obj: any) => Object.prototype.toString.call(obj) === '[object Array]'
 
 const determineDefaultValue = (item: FormItem) => {
     switch (item.itemType) {
@@ -16,6 +19,10 @@ const determineDefaultValue = (item: FormItem) => {
             return item.defaultValue || []
         case FormItemType.SELECT:
             return item.defaultValue || item.options[0] && item.options[0].value || ''
+        case FormItemType.DATEPICKER:
+            return null
+        case FormItemType.RANGEPICKER:
+            return [null, null]
         default:
             // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CUSTOM
             return item.defaultValue || ''
@@ -32,6 +39,8 @@ const createFormValues = (items: FormItem[]): FormValues => {
             FormItemType.RADIO,
             FormItemType.CHECKBOX,
             FormItemType.SELECT,
+            FormItemType.DATEPICKER,
+            FormItemType.RANGEPICKER,
             FormItemType.CUSTOM
         ].indexOf(item.itemType) > -1) {
             return {
@@ -51,7 +60,9 @@ const shouldValidateRequired = (item: FormItem) => [
     FormItemType.PASSWORD,
     FormItemType.TEXTAREA,
     FormItemType.CHECKBOX,
-    FormItemType.RADIO
+    FormItemType.RADIO,
+    FormItemType.DATEPICKER,
+    FormItemType.RANGEPICKER
 ].indexOf(item.itemType) > -1
 
 const shouldValidateRegExp = (item: FormItem) => [
@@ -112,10 +123,20 @@ export function Form (props: FormProps) {
             // 校验必填项
             if (shouldValidateRequired(item) && (item as any).required) {
                 if (
+                    value == null ||
+                    value === undefined ||
                     // 空字符串
                     (typeof value === 'string' && value === '') ||
                     // 空数组
-                    (Object.prototype.toString.call(value) === '[object Array]' && (value as string[]).length === 0)
+                    (Object.prototype.toString.call(value) === '[object Array]' && (value as string[]).length === 0) ||
+                    // 校验 range picker
+                    (
+                        item.itemType === FormItemType.RANGEPICKER &&
+                        (
+                            (isArray(value) && (value as any)[0] === null && (value as any)[1] === null) ||
+                            !isArray(value)
+                        )
+                    )
                  ) {
                     errors[name] = `${labelText}为必填项`
                     result = false
@@ -151,6 +172,32 @@ export function Form (props: FormProps) {
             const customItem = item as CustomItem
 
             return customItem.render(customItem as Omit<CustomItem, 'render'>, customItemStates[customItem.name])
+
+        case FormItemType.RANGEPICKER:
+            const rangepickerItem = item as DatepickerItem
+
+            return (
+                <DatePicker.RangePicker style={{ width: '100%' }} value={formValues[rangepickerItem.name] as any} onChange={dates => {
+                    setFormValues({
+                        ...formValues,
+                        [rangepickerItem.name]: dates as any
+                    })
+                }} />
+            )
+
+        case FormItemType.DATEPICKER:
+            const datepickerItem = item as DatepickerItem
+
+            return (
+                <DatePicker style={{ width: '100%' }} value={formValues[datepickerItem.name] as (Moment | null | undefined)} onChange={date => {
+                    if (date !== null) {
+                        setFormValues({
+                            ...formValues,
+                            [datepickerItem.name]: date
+                        })
+                    }
+                }} />
+            )
 
         case FormItemType.SELECT:
             const selectItem = item as SelectItem
@@ -222,7 +269,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Input.TextArea
-                    value={formValues[textareaItem.name]}
+                    value={formValues[textareaItem.name] as string}
                     onChange={e => {
                         setFormValues({
                             ...formValues,
@@ -268,7 +315,7 @@ export function Form (props: FormProps) {
             return (
                 <Input.Password
                     prefix={passwordItem.prefix || null}
-                    value={formValues[passwordItem.name]}
+                    value={formValues[passwordItem.name] as string}
                     onChange={e => {
                         setFormValues({
                             ...formValues,
@@ -285,7 +332,7 @@ export function Form (props: FormProps) {
             return (
                 <Input
                     prefix={inputItem.prefix || null}
-                    value={formValues[inputItem.name]}
+                    value={formValues[inputItem.name] as string}
                     onChange={e => {
                         setFormValues({
                             ...formValues,
@@ -316,6 +363,8 @@ export function Form (props: FormProps) {
                     FormItemType.RADIO,
                     FormItemType.CHECKBOX,
                     FormItemType.SELECT,
+                    FormItemType.DATEPICKER,
+                    FormItemType.RANGEPICKER,
                     FormItemType.CUSTOM
                 ].indexOf(itemType) > -1) {
                     const errMsg: string = (validationResult.errors as any)[item.name]

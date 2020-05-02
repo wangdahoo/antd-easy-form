@@ -1,4 +1,5 @@
 import { ReactNode, ReactElement, CSSProperties } from "react"
+import { Moment } from "moment"
 
 export interface FormProps {
     items?: FormItem[]
@@ -21,6 +22,8 @@ export enum FormItemType {
     CHECKBOX = 'checkbox',
     RADIO = 'radio',
     SELECT = 'select',
+    DATEPICKER = 'datepicker',
+    RANGEPICKER = 'rangepicker',
     CUSTOM = 'custom'
 }
 
@@ -102,6 +105,22 @@ export type SelectItem = {
     defaultValue?: string | number
 }
 
+export type DatepickerItem = {
+    name: string
+    itemType: FormItemType.DATEPICKER
+    labelText: string
+    defaultValue?: Moment
+    required?: boolean
+}
+
+export type RangepickerItem = {
+    name: string
+    itemType: FormItemType.RANGEPICKER
+    labelText: string
+    defaultValue?: Moment[]
+    required?: boolean
+}
+
 export type CustomItem = {
     name: string
     itemType: FormItemType.CUSTOM
@@ -111,10 +130,10 @@ export type CustomItem = {
     extra?: any,
 }
 
-export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem | CustomItem
+export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem | DatepickerItem | RangepickerItem | CustomItem
 
 export type FormValues = {
-    [key: string]: string | string[] | number
+    [key: string]: string | string[] | number | Moment | Moment[] | null | undefined
 }
 
 export interface ValidationResult {
