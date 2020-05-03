@@ -1,5 +1,5 @@
-import { ReactNode, ReactElement, CSSProperties } from "react"
-import { Moment } from "moment"
+import { ReactNode, ReactElement, CSSProperties } from 'react'
+import { Moment } from 'moment'
 
 export interface FormProps {
     items?: FormItem[]
@@ -130,7 +130,7 @@ export type CustomItem = {
     extra?: any,
 }
 
-export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem | DatepickerItem | RangepickerItem | CustomItem
+export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem | DatepickerItem | RangepickerItem | CustomItem // eslint-disable-line
 
 export type FormValues = {
     [key: string]: string | string[] | number | Moment | Moment[] | null | undefined

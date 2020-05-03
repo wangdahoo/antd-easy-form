@@ -1,3 +1,5 @@
+/* eslint no-mixed-operators:off */
+
 import './index.less'
 import React, { useState, useEffect } from 'react'
 import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty, DatePicker } from 'antd'
@@ -11,21 +13,21 @@ const isArray = (obj: any) => Object.prototype.toString.call(obj) === '[object A
 
 const determineDefaultValue = (item: FormItem) => {
     switch (item.itemType) {
-        case FormItemType.NUMBER:
-            return item.defaultValue || item.min || 0
-        case FormItemType.RADIO:
-            return item.defaultValue || item.options[0] && item.options[0].value || ''
-        case FormItemType.CHECKBOX:
-            return item.defaultValue || []
-        case FormItemType.SELECT:
-            return item.defaultValue || item.options[0] && item.options[0].value || ''
-        case FormItemType.DATEPICKER:
-            return null
-        case FormItemType.RANGEPICKER:
-            return [null, null]
-        default:
-            // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CUSTOM
-            return item.defaultValue || ''
+    case FormItemType.NUMBER:
+        return item.defaultValue || item.min || 0
+    case FormItemType.RADIO:
+        return item.defaultValue || item.options[0] && item.options[0].value || ''
+    case FormItemType.CHECKBOX:
+        return item.defaultValue || []
+    case FormItemType.SELECT:
+        return item.defaultValue || item.options[0] && item.options[0].value || ''
+    case FormItemType.DATEPICKER:
+        return null
+    case FormItemType.RANGEPICKER:
+        return [null, null]
+    default:
+        // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CUSTOM
+        return item.defaultValue || ''
     }
 }
 
@@ -141,7 +143,7 @@ export function Form (props: FormProps) {
                             !isArray(value)
                         )
                     )
-                 ) {
+                ) {
                     errors[name] = `${labelText}为必填项`
                     result = false
                 }
@@ -251,22 +253,22 @@ export function Form (props: FormProps) {
 
             return (
                 <Radio.Group
-                  value={formValues[radioItem.name]}
-                  onChange={e => {
-                    setFormValues({
-                        ...formValues,
-                        [radioItem.name]: e.target.value
-                    })
-                  }}
-                  buttonStyle={radioItem.buttonStyle}
+                    value={formValues[radioItem.name]}
+                    onChange={e => {
+                        setFormValues({
+                            ...formValues,
+                            [radioItem.name]: e.target.value
+                        })
+                    }}
+                    buttonStyle={radioItem.buttonStyle}
                 >
-                  {radioItem.options.map((option, optionIndex) => (
-                    <Radio.Button key={optionIndex} value={option.value}>
-                      {option.text}
-                    </Radio.Button>
-                  ))}
+                    {radioItem.options.map((option, optionIndex) => (
+                        <Radio.Button key={optionIndex} value={option.value}>
+                            {option.text}
+                        </Radio.Button>
+                    ))}
                 </Radio.Group>
-              )
+            )
 
         case FormItemType.TEXTAREA:
             const textareaItem = item as TextareaItem
