@@ -96,10 +96,14 @@ export function Form (props: FormProps) {
         }, Object.create(null))
 
     useEffect(() => {
+        onReset()
+    }, [items])
+
+    function onReset () {
         setFormValues(createFormValues(items))
         setValidationResult({ result: false, errors: {} })
         setValidateCount(0)
-    }, [items])
+    }
 
     function onSubmit () {
         // console.log(items, formValues)
@@ -396,7 +400,7 @@ export function Form (props: FormProps) {
 
             <div style={{ paddingLeft: labelWidth }}>
                 <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>{submitText}</Button>
-                <Button type="default" onClick={() => setFormValues(createFormValues(items))} style={{ width: 90 }}>{resetText}</Button>
+                <Button type="default" onClick={onReset} style={{ width: 90 }}>{resetText}</Button>
             </div>
         </div>
     )

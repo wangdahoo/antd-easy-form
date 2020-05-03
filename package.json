@@ -38,5 +38,6 @@
   "scripts": {
     "start": "parcel serve -d docs app/index.html",
     "build": "rollup -c"
-  }
+  },
+  "types": "src/index.d.ts"
 }

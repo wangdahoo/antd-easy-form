@@ -1,2 +1,2 @@
 export * from './Form'
-export * from './types'
+export { FormItemType } from './types'
