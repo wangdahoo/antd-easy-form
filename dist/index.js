@@ -245,7 +245,7 @@ function Form(props) {
       _props$formWidthUnit = props.formWidthUnit,
       formWidthUnit = _props$formWidthUnit === void 0 ? '%' : _props$formWidthUnit,
       _props$labelAlign = props.labelAlign,
-      labelAlign = _props$labelAlign === void 0 ? 'left' : _props$labelAlign,
+      labelAlign = _props$labelAlign === void 0 ? 'right' : _props$labelAlign,
       _props$labelWidth = props.labelWidth,
       labelWidth = _props$labelWidth === void 0 ? 100 : _props$labelWidth,
       _props$submitText = props.submitText,
@@ -499,7 +499,9 @@ function Form(props) {
     style: _objectSpread2(_objectSpread2({}, props.style || {}), {}, {
       width: "".concat(formWidth).concat(formWidthUnit)
     })
-  }, items.map(function (item, index) {
+  }, items.filter(function (item) {
+    return !item.hidden;
+  }).map(function (item, index) {
     var itemType = item.itemType;
 
     if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CUSTOM].indexOf(itemType) > -1) {
@@ -508,7 +510,10 @@ function Form(props) {
         className: "ef-form-item",
         key: index
       }, /*#__PURE__*/React.createElement("div", {
-        className: classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : ''),
+        className: classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '', {
+          'required': shouldValidateRequired(item) && item.required || [// 这三个组件是天然有值的
+          FormItemType.RADIO, FormItemType.SELECT, FormItemType.NUMBER].indexOf(item.itemType) > -1
+        }),
         style: _objectSpread2({
           width: labelWidth
         }, labelAlign !== 'top' ? {

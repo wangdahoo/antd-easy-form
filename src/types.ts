@@ -31,6 +31,7 @@ export type InputItem = {
     name: string
     itemType: FormItemType.INPUT
     labelText: string
+    hidden?: boolean
     placeholder?: string
     defaultValue?: string
     required?: boolean
@@ -42,6 +43,7 @@ export type PasswordItem = {
     name: string
     itemType: FormItemType.PASSWORD
     labelText: string
+    hidden?: boolean
     placeholder?: string
     defaultValue?: string
     required?: boolean
@@ -53,6 +55,7 @@ export type NumberItem = {
     name: string
     itemType: FormItemType.NUMBER
     labelText: string
+    hidden?: boolean
     defaultValue?: number
     min?: number
     max?: number
@@ -63,6 +66,7 @@ export type TextareaItem = {
     name: string
     itemType: FormItemType.TEXTAREA
     labelText: string
+    hidden?: boolean
     placeholder?: string
     defaultValue?: string
     required?: boolean
@@ -73,6 +77,7 @@ export type CheckboxItem = {
     name: string
     itemType: FormItemType.CHECKBOX
     labelText: string
+    hidden?: boolean
     options: {
         value: string | number
         text: string
@@ -85,6 +90,7 @@ export type RadioItem = {
     name: string
     itemType: FormItemType.RADIO
     labelText: string
+    hidden?: boolean
     options: {
         value: string | number
         text: string
@@ -98,6 +104,7 @@ export type SelectItem = {
     name: string
     itemType: FormItemType.SELECT
     labelText: string
+    hidden?: boolean
     options: {
         value: string | number
         text: string
@@ -109,6 +116,7 @@ export type DatepickerItem = {
     name: string
     itemType: FormItemType.DATEPICKER
     labelText: string
+    hidden?: boolean
     defaultValue?: Moment
     required?: boolean
 }
@@ -117,6 +125,7 @@ export type RangepickerItem = {
     name: string
     itemType: FormItemType.RANGEPICKER
     labelText: string
+    hidden?: boolean
     defaultValue?: Moment[]
     required?: boolean
 }
@@ -125,6 +134,7 @@ export type CustomItem = {
     name: string
     itemType: FormItemType.CUSTOM
     labelText: string
+    hidden?: boolean
     defaultValue: any
     render: (item: Omit<CustomItem, 'render'>, state: any) => ReactElement
     extra?: any,

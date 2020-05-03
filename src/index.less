@@ -28,6 +28,11 @@
             &:after {
                 content: '：';
             }
+
+            &.required::before {
+                content: '* ';
+                color: #f5222d;
+            }
         }
 
         &-content {

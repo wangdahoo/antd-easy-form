@@ -19,6 +19,14 @@ const TabPane = Tabs.TabPane
 
 const loginFormItems = [
     {
+        name: 'id',
+        itemType: FormItemType.INPUT,
+        labelText: '用户 id',
+        hidden: true,
+        required: true,
+        defaultValue: 1
+    },
+    {
         name: 'username',
         itemType: FormItemType.INPUT,
         labelText: '用户名',
@@ -153,7 +161,7 @@ const registerFormItems = [
         defaultValue: 2,
         render: (item, state) => {
             // the form item
-            console.log(item)
+            // console.log(item)
 
             return <CustomAvatar value={state.value} onChange={newValue => {
                 state.value = newValue
@@ -208,7 +216,7 @@ export default function App (props) {
             <div style={{ width: 600, margin: '20px auto' }}>
                 <Form
                     items={items}
-                    labelAlign={'left'}
+                    labelAlign={'right'}
                     labelWidth={120}
                     onSubmit={console.log}
                 />

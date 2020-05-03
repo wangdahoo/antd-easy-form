@@ -74,7 +74,7 @@ const shouldValidateRegExp = (item: FormItem) => [
 ].indexOf(item.itemType) > -1
 
 export function Form (props: FormProps) {
-    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'left', labelWidth = 100, submitText = '提交', resetText = '重置' } = props
+    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'right', labelWidth = 100, submitText = '提交', resetText = '重置' } = props
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
@@ -358,7 +358,7 @@ export function Form (props: FormProps) {
             ...(props.style || {}),
             width: `${formWidth}${formWidthUnit}`
         }}>
-            {items.map((item, index) => {
+            {items.filter(item => !item.hidden).map((item, index) => {
                 const { itemType } = item
 
                 if ([
@@ -377,7 +377,14 @@ export function Form (props: FormProps) {
 
                     return (
                         <div className="ef-form-item" key={index}>
-                            <div className={classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '')} style={{
+                            <div className={classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '', {
+                                'required': (shouldValidateRequired(item) && (item as any).required) || [
+                                    // 这三个组件是天然有值的
+                                    FormItemType.RADIO,
+                                    FormItemType.SELECT,
+                                    FormItemType.NUMBER
+                                ].indexOf(item.itemType) > -1
+                            })} style={{
                                 width: labelWidth,
                                 ...(labelAlign !== 'top' ? {
                                     textAlign: labelAlign
