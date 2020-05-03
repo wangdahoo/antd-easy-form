@@ -286,13 +286,17 @@ function Form(props) {
     return states;
   }, Object.create(null));
   useEffect(function () {
+    onReset();
+  }, [items]);
+
+  function onReset() {
     setFormValues(createFormValues(items));
     setValidationResult({
       result: false,
       errors: {}
     });
     setValidateCount(0);
-  }, [items]);
+  }
 
   function onSubmit() {
     // console.log(items, formValues)
@@ -533,9 +537,7 @@ function Form(props) {
     }
   }, submitText), /*#__PURE__*/React.createElement(Button, {
     type: "default",
-    onClick: function onClick() {
-      return setFormValues(createFormValues(items));
-    },
+    onClick: onReset,
     style: {
       width: 90
     }
