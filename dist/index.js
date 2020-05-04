@@ -251,7 +251,11 @@ function Form(props) {
       _props$submitText = props.submitText,
       submitText = _props$submitText === void 0 ? '提交' : _props$submitText,
       _props$resetText = props.resetText,
-      resetText = _props$resetText === void 0 ? '重置' : _props$resetText;
+      resetText = _props$resetText === void 0 ? '重置' : _props$resetText,
+      _props$resetAfterSubm = props.resetAfterSubmit,
+      resetAfterSubmit = _props$resetAfterSubm === void 0 ? false : _props$resetAfterSubm,
+      _props$hideResetButto = props.hideResetButton,
+      hideResetButton = _props$hideResetButto === void 0 ? false : _props$hideResetButto;
 
   var _useState = useState(createFormValues(items)),
       _useState2 = _slicedToArray(_useState, 2),
@@ -304,7 +308,7 @@ function Form(props) {
 
     if (newValidationResult.result) {
       if (props.onSubmit) props.onSubmit(formValues);
-      setFormValues(createFormValues(items));
+      if (resetAfterSubmit) setFormValues(createFormValues(items));
     }
 
     setValidationResult(newValidationResult);
@@ -540,7 +544,7 @@ function Form(props) {
       width: 90,
       marginRight: 16
     }
-  }, submitText), /*#__PURE__*/React.createElement(Button, {
+  }, submitText), hideResetButton ? null : /*#__PURE__*/React.createElement(Button, {
     type: "default",
     onClick: onReset,
     style: {

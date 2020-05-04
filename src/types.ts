@@ -12,6 +12,8 @@ export interface FormProps {
     resetText?: string
     style?: CSSProperties
     className?: string
+    resetAfterSubmit?: boolean
+    hideResetButton?: boolean
 }
 
 export enum FormItemType {

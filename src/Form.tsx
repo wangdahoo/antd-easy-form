@@ -74,7 +74,8 @@ const shouldValidateRegExp = (item: FormItem) => [
 ].indexOf(item.itemType) > -1
 
 export function Form (props: FormProps) {
-    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'right', labelWidth = 100, submitText = '提交', resetText = '重置' } = props
+    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'right', labelWidth = 100, submitText = '提交', resetText = '重置',
+        resetAfterSubmit = false, hideResetButton = false } = props
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
@@ -114,7 +115,7 @@ export function Form (props: FormProps) {
 
         if (newValidationResult.result) {
             if (props.onSubmit) props.onSubmit(formValues)
-            setFormValues(createFormValues(items))
+            if (resetAfterSubmit) setFormValues(createFormValues(items))
         }
 
         setValidationResult(newValidationResult)
@@ -409,7 +410,7 @@ export function Form (props: FormProps) {
 
             <div style={{ paddingLeft: labelWidth }}>
                 <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>{submitText}</Button>
-                <Button type="default" onClick={onReset} style={{ width: 90 }}>{resetText}</Button>
+                {hideResetButton ? null :<Button type="default" onClick={onReset} style={{ width: 90 }}>{resetText}</Button>}
             </div>
         </div>
     )
