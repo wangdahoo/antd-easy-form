@@ -193,18 +193,22 @@ var isArray$1 = function isArray(obj) {
 };
 
 var determineDefaultValue = function determineDefaultValue(item) {
+  var isValid = function isValid(defaultValue) {
+    return defaultValue !== null && defaultValue !== undefined;
+  };
+
   switch (item.itemType) {
     case FormItemType.NUMBER:
-      return item.defaultValue || item.min || 0;
+      return isValid(item.defaultValue) ? item.defaultValue : item.min || 0;
 
     case FormItemType.RADIO:
-      return item.defaultValue || item.options[0] && item.options[0].value || '';
+      return isValid(item.defaultValue) ? item.defaultValue : item.options[0] && item.options[0].value || '';
 
     case FormItemType.CHECKBOX:
       return item.defaultValue || [];
 
     case FormItemType.SELECT:
-      return item.defaultValue || item.options[0] && item.options[0].value || '';
+      return isValid(item.defaultValue) ? item.defaultValue : item.options[0] && item.options[0].value || '';
 
     case FormItemType.DATEPICKER:
       return null;
@@ -226,6 +230,7 @@ var createFormValues = function createFormValues(items) {
 
     return values;
   }, {});
+  console.log('createFormValues', values);
   return values;
 };
 
@@ -515,8 +520,7 @@ function Form(props) {
         key: index
       }, /*#__PURE__*/React.createElement("div", {
         className: classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '', {
-          'required': shouldValidateRequired(item) && item.required || [// 这三个组件是天然有值的
-          FormItemType.RADIO, FormItemType.SELECT, FormItemType.NUMBER].indexOf(item.itemType) > -1
+          'required': shouldValidateRequired(item) && item.required
         }),
         style: _objectSpread2({
           width: labelWidth

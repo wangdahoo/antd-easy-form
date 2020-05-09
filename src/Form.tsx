@@ -12,15 +12,19 @@ import { Moment } from 'moment'
 const isArray = (obj: any) => Object.prototype.toString.call(obj) === '[object Array]'
 
 const determineDefaultValue = (item: FormItem) => {
+    const isValid = (defaultValue: any) => {
+        return defaultValue !== null && defaultValue !== undefined
+    }
+
     switch (item.itemType) {
     case FormItemType.NUMBER:
-        return item.defaultValue || item.min || 0
+        return isValid(item.defaultValue) ? item.defaultValue : (item.min || 0)
     case FormItemType.RADIO:
-        return item.defaultValue || item.options[0] && item.options[0].value || ''
+        return isValid(item.defaultValue) ? item.defaultValue : (item.options[0] && item.options[0].value || '')
     case FormItemType.CHECKBOX:
         return item.defaultValue || []
     case FormItemType.SELECT:
-        return item.defaultValue || item.options[0] && item.options[0].value || ''
+        return isValid(item.defaultValue) ? item.defaultValue : (item.options[0] && item.options[0].value || '')
     case FormItemType.DATEPICKER:
         return null
     case FormItemType.RANGEPICKER:
@@ -53,6 +57,8 @@ const createFormValues = (items: FormItem[]): FormValues => {
 
         return values
     }, {})
+
+    console.log('createFormValues', values)
 
     return values
 }
@@ -379,12 +385,7 @@ export function Form (props: FormProps) {
                     return (
                         <div className="ef-form-item" key={index}>
                             <div className={classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '', {
-                                'required': (shouldValidateRequired(item) && (item as any).required) || [
-                                    // 这三个组件是天然有值的
-                                    FormItemType.RADIO,
-                                    FormItemType.SELECT,
-                                    FormItemType.NUMBER
-                                ].indexOf(item.itemType) > -1
+                                'required': (shouldValidateRequired(item) && (item as any).required)
                             })} style={{
                                 width: labelWidth,
                                 ...(labelAlign !== 'top' ? {

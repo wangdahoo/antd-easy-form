@@ -87,7 +87,8 @@ const registerFormItems = [
                 text: '女'
             },
         ],
-        buttonStyle: 'solid'
+        buttonStyle: 'solid',
+        defaultValue: 0
     },
     {
         name: 'birthday',
