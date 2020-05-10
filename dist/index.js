@@ -229,8 +229,8 @@ var createFormValues = function createFormValues(items) {
     }
 
     return values;
-  }, {});
-  console.log('createFormValues', values);
+  }, {}); // console.log('createFormValues', values)
+
   return values;
 };
 
@@ -455,6 +455,8 @@ function Form(props) {
             min = _numberItem$min === void 0 ? 0 : _numberItem$min,
             _numberItem$max = numberItem.max,
             max = _numberItem$max === void 0 ? 100 : _numberItem$max,
+            _numberItem$step = numberItem.step,
+            step = _numberItem$step === void 0 ? 1 : _numberItem$step,
             _numberItem$unit = numberItem.unit,
             unit = _numberItem$unit === void 0 ? '' : _numberItem$unit;
         return /*#__PURE__*/React.createElement(InputNumber, {
@@ -468,6 +470,7 @@ function Form(props) {
           },
           min: min,
           max: max,
+          step: step,
           formatter: function formatter(value) {
             if (!value) return "".concat(min, " ").concat(unit);
             return "".concat(value, " ").concat(unit);

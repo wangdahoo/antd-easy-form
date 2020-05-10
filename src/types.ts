@@ -61,6 +61,7 @@ export type NumberItem = {
     defaultValue?: number
     min?: number
     max?: number
+    step?: number
     unit?: string
 }
 

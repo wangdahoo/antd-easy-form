@@ -172,6 +172,27 @@ const registerFormItems = [
     }
 ]
 
+const numberFormItems = [
+    {
+        name: 'apple_count',
+        labelText: '苹果个数',
+        itemType: FormItemType.NUMBER,
+        min: 0,
+        max: 10000,
+        step: 1,
+        unit: '个'
+      },
+      {
+        name: 'price',
+        labelText: '价格',
+        itemType: FormItemType.NUMBER,
+        min: 0,
+        max: 10000,
+        step: 0.01,
+        unit: '¥'
+      }
+]
+
 function CustomAvatar (props) {
     const { value } = props
 
@@ -204,6 +225,8 @@ export default function App (props) {
             setItems(loginFormItems)
         } else if (key === 'register') {
             setItems(registerFormItems)
+        } else if (key === 'numbers') {
+            setItems(numberFormItems)
         }
     }
 
@@ -212,6 +235,7 @@ export default function App (props) {
             <Tabs onChange={onChangeTab} defaultActiveKey={'register'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
+                <TabPane tab='数字' key="numbers"></TabPane>
             </Tabs>
 
             <div style={{ width: 600, margin: '20px auto' }}>

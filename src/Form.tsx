@@ -58,7 +58,7 @@ const createFormValues = (items: FormItem[]): FormValues => {
         return values
     }, {})
 
-    console.log('createFormValues', values)
+    // console.log('createFormValues', values)
 
     return values
 }
@@ -295,7 +295,7 @@ export function Form (props: FormProps) {
 
         case FormItemType.NUMBER:
             const numberItem = item as NumberItem
-            const { min = 0, max = 100, unit = '' } = numberItem
+            const { min = 0, max = 100, step = 1, unit = '' } = numberItem
 
             return (
                 <InputNumber
@@ -311,6 +311,7 @@ export function Form (props: FormProps) {
                     }}
                     min={min}
                     max={max}
+                    step={step}
                     formatter={value => {
                         if (!value) return `${min} ${unit}`
                         return `${value} ${unit}`
