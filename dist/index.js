@@ -2,6 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { Empty, Divider, Button, Input, InputNumber, Radio, Checkbox, Select, DatePicker } from 'antd';
 import classnames from 'classnames';
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -298,13 +334,82 @@ function Form(props) {
     onReset();
   }, [items]);
 
+  function resolveOptions() {
+    return _resolveOptions.apply(this, arguments);
+  }
+
+  function _resolveOptions() {
+    _resolveOptions = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var i, item;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              i = 0;
+
+            case 1:
+              if (!(i < items.length)) {
+                _context.next = 10;
+                break;
+              }
+
+              item = items[i];
+
+              if (!(item.itemType === FormItemType.SELECT && item.getOptions)) {
+                _context.next = 7;
+                break;
+              }
+
+              _context.next = 6;
+              return item.getOptions();
+
+            case 6:
+              item.options = _context.sent;
+
+            case 7:
+              i++;
+              _context.next = 1;
+              break;
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _resolveOptions.apply(this, arguments);
+  }
+
   function onReset() {
-    setFormValues(createFormValues(items));
-    setValidationResult({
-      result: false,
-      errors: {}
-    });
-    setValidateCount(0);
+    return _onReset.apply(this, arguments);
+  }
+
+  function _onReset() {
+    _onReset = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return resolveOptions();
+
+            case 2:
+              setFormValues(createFormValues(items));
+              setValidationResult({
+                result: false,
+                errors: {}
+              });
+              setValidateCount(0);
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _onReset.apply(this, arguments);
   }
 
   function onSubmit() {

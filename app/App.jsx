@@ -181,8 +181,8 @@ const numberFormItems = [
         max: 10000,
         step: 1,
         unit: '个'
-      },
-      {
+    },
+    {
         name: 'price',
         labelText: '价格',
         itemType: FormItemType.NUMBER,
@@ -190,10 +190,42 @@ const numberFormItems = [
         max: 10000,
         step: 0.01,
         unit: '¥'
-      }
+    }
 ]
 
-function CustomAvatar (props) {
+const ajaxOptionsFormItems = [
+    {
+        name: 'city',
+        labelText: '城市',
+        itemType: FormItemType.SELECT,
+        options: [
+            {
+                value: '',
+                text: '请选择'
+            }
+        ],
+        getOptions: function () {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => resolve([
+                    {
+                        value: '',
+                        text: '请选择'
+                    },
+                    {
+                        value: '上海',
+                        text: '上海'
+                    },
+                    {
+                        value: '北京',
+                        text: '北京'
+                    }
+                ]), 500)
+            })
+        }
+    }
+]
+
+function CustomAvatar(props) {
     const { value } = props
 
     const names = ['魑', '魅', '魍', '魉']
@@ -201,10 +233,10 @@ function CustomAvatar (props) {
 
     const [index, setIndex] = useState(value)
 
-    function onChange () {
-      const newIndex = index < names.length - 1 ? index + 1: 0
-      setIndex(newIndex)
-      if (props.onChange) props.onChange(newIndex)
+    function onChange() {
+        const newIndex = index < names.length - 1 ? index + 1 : 0
+        setIndex(newIndex)
+        if (props.onChange) props.onChange(newIndex)
     }
 
     return (
@@ -217,25 +249,28 @@ function CustomAvatar (props) {
     )
 }
 
-export default function App (props) {
-    const [items, setItems] = useState(registerFormItems)
+export default function App(props) {
+    const [items, setItems] = useState(ajaxOptionsFormItems)
 
-    function onChangeTab (key) {
+    function onChangeTab(key) {
         if (key === 'login') {
             setItems(loginFormItems)
         } else if (key === 'register') {
             setItems(registerFormItems)
         } else if (key === 'numbers') {
             setItems(numberFormItems)
+        } else if (key === 'ajax options') {
+            setItems(ajaxOptionsFormItems)
         }
     }
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab} defaultActiveKey={'register'}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'ajax options'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
                 <TabPane tab='数字' key="numbers"></TabPane>
+                <TabPane tab='load ajax options' key="ajax options"></TabPane>
             </Tabs>
 
             <div style={{ width: 600, margin: '20px auto' }}>

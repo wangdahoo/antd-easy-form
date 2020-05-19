@@ -108,7 +108,17 @@ export function Form (props: FormProps) {
         onReset()
     }, [items])
 
-    function onReset () {
+    async function resolveOptions () {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i]
+            if (item.itemType === FormItemType.SELECT && item.getOptions) {
+                item.options = await item.getOptions()
+            }
+        }
+    }
+
+    async function onReset () {
+        await resolveOptions()
         setFormValues(createFormValues(items))
         setValidationResult({ result: false, errors: {} })
         setValidateCount(0)
