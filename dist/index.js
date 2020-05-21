@@ -279,9 +279,12 @@ var shouldValidateRegExp = function shouldValidateRegExp(item) {
 };
 
 function Form(props) {
-  var _props$items = props.items,
-      items = _props$items === void 0 ? [] : _props$items,
-      _props$formWidth = props.formWidth,
+  var items = (props.items || []).map(function (i) {
+    return _objectSpread2(_objectSpread2({}, i), {}, {
+      disabled: props.disabled
+    });
+  });
+  var _props$formWidth = props.formWidth,
       formWidth = _props$formWidth === void 0 ? 100 : _props$formWidth,
       _props$formWidthUnit = props.formWidthUnit,
       formWidthUnit = _props$formWidthUnit === void 0 ? '%' : _props$formWidthUnit,
@@ -332,7 +335,7 @@ function Form(props) {
   }, Object.create(null));
   useEffect(function () {
     onReset();
-  }, [items]);
+  }, [props]);
 
   function resolveOptions() {
     return _resolveOptions.apply(this, arguments);
@@ -475,6 +478,7 @@ function Form(props) {
       case FormItemType.RANGEPICKER:
         var rangepickerItem = item;
         return /*#__PURE__*/React.createElement(DatePicker.RangePicker, {
+          disabled: rangepickerItem.disabled,
           style: {
             width: '100%'
           },
@@ -487,6 +491,7 @@ function Form(props) {
       case FormItemType.DATEPICKER:
         var datepickerItem = item;
         return /*#__PURE__*/React.createElement(DatePicker, {
+          disabled: datepickerItem.disabled,
           style: {
             width: '100%'
           },
@@ -501,6 +506,7 @@ function Form(props) {
       case FormItemType.SELECT:
         var selectItem = item;
         return /*#__PURE__*/React.createElement(Select, {
+          disabled: selectItem.disabled,
           value: formValues[selectItem.name],
           onChange: function onChange(value) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, selectItem.name, value)));
@@ -518,6 +524,7 @@ function Form(props) {
       case FormItemType.CHECKBOX:
         var checkboxItem = item;
         return /*#__PURE__*/React.createElement(Checkbox.Group, {
+          disabled: checkboxItem.disabled,
           value: formValues[checkboxItem.name],
           onChange: function onChange(value) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, checkboxItem.name, value)));
@@ -532,6 +539,7 @@ function Form(props) {
       case FormItemType.RADIO:
         var radioItem = item;
         return /*#__PURE__*/React.createElement(Radio.Group, {
+          disabled: radioItem.disabled,
           value: formValues[radioItem.name],
           onChange: function onChange(e) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, radioItem.name, e.target.value)));
@@ -547,6 +555,7 @@ function Form(props) {
       case FormItemType.TEXTAREA:
         var textareaItem = item;
         return /*#__PURE__*/React.createElement(Input.TextArea, {
+          disabled: textareaItem.disabled,
           value: formValues[textareaItem.name],
           onChange: function onChange(e) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, textareaItem.name, e.target.value)));
@@ -565,6 +574,7 @@ function Form(props) {
             _numberItem$unit = numberItem.unit,
             unit = _numberItem$unit === void 0 ? '' : _numberItem$unit;
         return /*#__PURE__*/React.createElement(InputNumber, {
+          disabled: numberItem.disabled,
           style: {
             width: '100%'
           },
@@ -589,6 +599,7 @@ function Form(props) {
       case FormItemType.PASSWORD:
         var passwordItem = item;
         return /*#__PURE__*/React.createElement(Input.Password, {
+          disabled: passwordItem.disabled,
           prefix: passwordItem.prefix || null,
           value: formValues[passwordItem.name],
           onChange: function onChange(e) {
@@ -600,6 +611,7 @@ function Form(props) {
       default:
         var inputItem = item;
         return /*#__PURE__*/React.createElement(Input, {
+          disabled: inputItem.disabled,
           prefix: inputItem.prefix || null,
           value: formValues[inputItem.name],
           onChange: function onChange(e) {

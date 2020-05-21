@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Tabs, Divider, Avatar, Button } from 'antd'
+import { Tabs, Divider, Avatar, Button, Checkbox } from 'antd'
 import { UserOutlined, KeyOutlined } from '@ant-design/icons'
 
 // 按 esm 的方式引入
@@ -251,6 +251,7 @@ function CustomAvatar(props) {
 
 export default function App(props) {
     const [items, setItems] = useState(ajaxOptionsFormItems)
+    const [formDisabled, setFormDisabled] = useState(false)
 
     function onChangeTab(key) {
         if (key === 'login') {
@@ -274,11 +275,16 @@ export default function App(props) {
             </Tabs>
 
             <div style={{ width: 600, margin: '20px auto' }}>
+                <Checkbox checked={formDisabled} onChange={e => {
+                    setFormDisabled(e.target.checked)
+                }}>Form Disabled</Checkbox>
+
                 <Form
                     items={items}
                     labelAlign={'right'}
                     labelWidth={120}
                     onSubmit={console.log}
+                    disabled={formDisabled}
                 />
             </div>
         </div>

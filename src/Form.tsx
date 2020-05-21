@@ -80,7 +80,8 @@ const shouldValidateRegExp = (item: FormItem) => [
 ].indexOf(item.itemType) > -1
 
 export function Form (props: FormProps) {
-    const { items = [], formWidth = 100, formWidthUnit = '%', labelAlign = 'right', labelWidth = 100, submitText = '提交', resetText = '重置',
+    const items = (props.items || []).map(i => ({ ...i, disabled: props.disabled }))
+    const { formWidth = 100, formWidthUnit = '%', labelAlign = 'right', labelWidth = 100, submitText = '提交', resetText = '重置',
         resetAfterSubmit = false, hideResetButton = false } = props
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
@@ -106,7 +107,7 @@ export function Form (props: FormProps) {
 
     useEffect(() => {
         onReset()
-    }, [items])
+    }, [props])
 
     async function resolveOptions () {
         for (let i = 0; i < items.length; i++) {
@@ -200,26 +201,36 @@ export function Form (props: FormProps) {
             const rangepickerItem = item as DatepickerItem
 
             return (
-                <DatePicker.RangePicker style={{ width: '100%' }} value={formValues[rangepickerItem.name] as any} onChange={dates => {
-                    setFormValues({
-                        ...formValues,
-                        [rangepickerItem.name]: dates as any
-                    })
-                }} />
+                <DatePicker.RangePicker
+                    disabled={rangepickerItem.disabled}
+                    style={{ width: '100%' }}
+                    value={formValues[rangepickerItem.name] as any}
+                    onChange={dates => {
+                        setFormValues({
+                            ...formValues,
+                            [rangepickerItem.name]: dates as any
+                        })
+                    }}
+                />
             )
 
         case FormItemType.DATEPICKER:
             const datepickerItem = item as DatepickerItem
 
             return (
-                <DatePicker style={{ width: '100%' }} value={formValues[datepickerItem.name] as (Moment | null | undefined)} onChange={date => {
-                    if (date !== null) {
-                        setFormValues({
-                            ...formValues,
-                            [datepickerItem.name]: date
-                        })
-                    }
-                }} />
+                <DatePicker
+                    disabled={datepickerItem.disabled}
+                    style={{ width: '100%' }}
+                    value={formValues[datepickerItem.name] as (Moment | null | undefined)}
+                    onChange={date => {
+                        if (date !== null) {
+                            setFormValues({
+                                ...formValues,
+                                [datepickerItem.name]: date
+                            })
+                        }
+                    }}
+                />
             )
 
         case FormItemType.SELECT:
@@ -227,6 +238,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Select
+                    disabled={selectItem.disabled}
                     value={formValues[selectItem.name] as string}
                     onChange={(value: string) => {
                         setFormValues({
@@ -249,6 +261,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Checkbox.Group
+                    disabled={checkboxItem.disabled}
                     value={formValues[checkboxItem.name] as string[]}
                     onChange={value => {
                         setFormValues({
@@ -270,6 +283,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Radio.Group
+                    disabled={radioItem.disabled}
                     value={formValues[radioItem.name]}
                     onChange={e => {
                         setFormValues({
@@ -292,6 +306,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Input.TextArea
+                    disabled={textareaItem.disabled}
                     value={formValues[textareaItem.name] as string}
                     onChange={e => {
                         setFormValues({
@@ -309,6 +324,7 @@ export function Form (props: FormProps) {
 
             return (
                 <InputNumber
+                    disabled={numberItem.disabled}
                     style={{width: '100%'}}
                     value={formValues[numberItem.name] as number}
                     onChange={value => {
@@ -338,6 +354,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Input.Password
+                    disabled={passwordItem.disabled}
                     prefix={passwordItem.prefix || null}
                     value={formValues[passwordItem.name] as string}
                     onChange={e => {
@@ -355,6 +372,7 @@ export function Form (props: FormProps) {
 
             return (
                 <Input
+                    disabled={inputItem.disabled}
                     prefix={inputItem.prefix || null}
                     value={formValues[inputItem.name] as string}
                     onChange={e => {

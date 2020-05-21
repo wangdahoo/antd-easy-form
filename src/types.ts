@@ -14,6 +14,7 @@ export interface FormProps {
     className?: string
     resetAfterSubmit?: boolean
     hideResetButton?: boolean
+    disabled?: boolean
 }
 
 export enum FormItemType {
@@ -34,6 +35,7 @@ export type InputItem = {
     itemType: FormItemType.INPUT
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     placeholder?: string
     defaultValue?: string
     required?: boolean
@@ -46,6 +48,7 @@ export type PasswordItem = {
     itemType: FormItemType.PASSWORD
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     placeholder?: string
     defaultValue?: string
     required?: boolean
@@ -58,6 +61,7 @@ export type NumberItem = {
     itemType: FormItemType.NUMBER
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     defaultValue?: number
     min?: number
     max?: number
@@ -70,6 +74,7 @@ export type TextareaItem = {
     itemType: FormItemType.TEXTAREA
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     placeholder?: string
     defaultValue?: string
     required?: boolean
@@ -81,6 +86,7 @@ export type CheckboxItem = {
     itemType: FormItemType.CHECKBOX
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     options: {
         value: string | number
         text: string
@@ -94,6 +100,7 @@ export type RadioItem = {
     itemType: FormItemType.RADIO
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     options: {
         value: string | number
         text: string
@@ -108,6 +115,7 @@ export type SelectItem = {
     itemType: FormItemType.SELECT
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     options: {
         value: string | number
         text: string
@@ -124,6 +132,7 @@ export type DatepickerItem = {
     itemType: FormItemType.DATEPICKER
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     defaultValue?: Moment
     required?: boolean
 }
@@ -133,6 +142,7 @@ export type RangepickerItem = {
     itemType: FormItemType.RANGEPICKER
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     defaultValue?: Moment[]
     required?: boolean
 }
@@ -142,6 +152,7 @@ export type CustomItem = {
     itemType: FormItemType.CUSTOM
     labelText: string
     hidden?: boolean
+    disabled?: boolean
     defaultValue: any
     render: (item: Omit<CustomItem, 'render'>, state: any) => ReactElement
     extra?: any,
