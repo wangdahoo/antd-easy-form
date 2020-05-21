@@ -655,7 +655,7 @@ function Form(props) {
     }
 
     return null;
-  }), /*#__PURE__*/React.createElement(Divider, {
+  }), props.disabled ? null : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Divider, {
     className: "ef-divider"
   }), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -674,7 +674,7 @@ function Form(props) {
     style: {
       width: 90
     }
-  }, resetText)));
+  }, resetText))));
 }
 
 export { Form, FormItemType };

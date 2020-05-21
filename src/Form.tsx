@@ -436,12 +436,14 @@ export function Form (props: FormProps) {
                 return null
             })}
 
-            <Divider className='ef-divider' />
+            {props.disabled ? null : <>
+                <Divider className='ef-divider' />
 
-            <div style={{ paddingLeft: labelWidth }}>
-                <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>{submitText}</Button>
-                {hideResetButton ? null :<Button type="default" onClick={onReset} style={{ width: 90 }}>{resetText}</Button>}
-            </div>
+                <div style={{ paddingLeft: labelWidth }}>
+                    <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>{submitText}</Button>
+                    {hideResetButton ? null :<Button type="default" onClick={onReset} style={{ width: 90 }}>{resetText}</Button>}
+                </div>
+            </>}
         </div>
     )
 }
