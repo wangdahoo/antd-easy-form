@@ -80,7 +80,7 @@ const shouldValidateRegExp = (item: FormItem) => [
 ].indexOf(item.itemType) > -1
 
 export function Form (props: FormProps) {
-    const items = (props.items || []).map(i => ({ ...i, disabled: i.disabled ? i.disabled : props.disabled }))
+    const items = (props.items || []).map(i => ({ ...i, disabled: props.disabled || i.disabled }))
     const { formWidth = 100, formWidthUnit = '%', labelAlign = 'right', labelWidth = 100, submitText = '提交', resetText = '重置',
         resetAfterSubmit = false, hideResetButton = false } = props
     const [formValues, setFormValues] = useState(createFormValues(items))

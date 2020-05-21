@@ -281,7 +281,7 @@ var shouldValidateRegExp = function shouldValidateRegExp(item) {
 function Form(props) {
   var items = (props.items || []).map(function (i) {
     return _objectSpread2(_objectSpread2({}, i), {}, {
-      disabled: i.disabled ? i.disabled : props.disabled
+      disabled: props.disabled || i.disabled
     });
   });
   var _props$formWidth = props.formWidth,

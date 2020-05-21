@@ -138,7 +138,8 @@ const registerFormItems = [
                 value: '北京',
                 text: '北京',
             }
-        ]
+        ],
+        disabled: true
     },
     {
         name: 'salay',
@@ -221,8 +222,7 @@ const ajaxOptionsFormItems = [
                     }
                 ]), 500)
             })
-        },
-        disabled: true
+        }
     }
 ]
 
@@ -251,7 +251,7 @@ function CustomAvatar(props) {
 }
 
 export default function App(props) {
-    const [items, setItems] = useState(ajaxOptionsFormItems)
+    const [items, setItems] = useState(registerFormItems)
     const [formDisabled, setFormDisabled] = useState(false)
 
     function onChangeTab(key) {
@@ -268,7 +268,7 @@ export default function App(props) {
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab} defaultActiveKey={'ajax options'}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'register'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
                 <TabPane tab='数字' key="numbers"></TabPane>
