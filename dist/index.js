@@ -281,7 +281,7 @@ var shouldValidateRegExp = function shouldValidateRegExp(item) {
 function Form(props) {
   var items = (props.items || []).map(function (i) {
     return _objectSpread2(_objectSpread2({}, i), {}, {
-      disabled: props.disabled
+      disabled: i.disabled ? i.disabled : props.disabled
     });
   });
   var _props$formWidth = props.formWidth,
@@ -505,6 +505,7 @@ function Form(props) {
 
       case FormItemType.SELECT:
         var selectItem = item;
+        console.log(selectItem);
         return /*#__PURE__*/React.createElement(Select, {
           disabled: selectItem.disabled,
           value: formValues[selectItem.name],

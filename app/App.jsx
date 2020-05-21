@@ -221,7 +221,8 @@ const ajaxOptionsFormItems = [
                     }
                 ]), 500)
             })
-        }
+        },
+        disabled: true
     }
 ]
 
