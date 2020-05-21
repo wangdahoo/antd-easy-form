@@ -235,7 +235,6 @@ export function Form (props: FormProps) {
 
         case FormItemType.SELECT:
             const selectItem = item as SelectItem
-            console.log(selectItem)
 
             return (
                 <Select

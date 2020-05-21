@@ -505,7 +505,6 @@ function Form(props) {
 
       case FormItemType.SELECT:
         var selectItem = item;
-        console.log(selectItem);
         return /*#__PURE__*/React.createElement(Select, {
           disabled: selectItem.disabled,
           value: formValues[selectItem.name],

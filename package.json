@@ -1,6 +1,6 @@
 {
   "name": "@wangdahoo/antd-easy-form",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "main": "dist/index.js",
   "umd": "dist/umd/index.js",
   "repository": "git@github.com:wangdahoo/antd-easy-form.git",
