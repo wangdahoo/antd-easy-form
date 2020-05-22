@@ -86,6 +86,12 @@ export function Form (props: FormProps) {
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
+    const [ajaxOptions, setAjaxOptions] = useState({} as {
+        [key: string]: {
+            value: string | number
+            text: string
+        }[]
+    })
 
     const customItemStates: { [key: string]: any } = items
         .filter(item => item.itemType === FormItemType.CUSTOM)
@@ -113,7 +119,7 @@ export function Form (props: FormProps) {
         for (let i = 0; i < items.length; i++) {
             const item = items[i]
             if (item.itemType === FormItemType.SELECT && item.getOptions) {
-                item.options = await item.getOptions()
+                ajaxOptions[item.name] = await item.getOptions()
             }
         }
     }
@@ -248,7 +254,11 @@ export function Form (props: FormProps) {
                     }}
                     style={{width: '100%'}}
                 >
-                    {selectItem.options.map((option, optionIndex) => (
+                    {(
+                        selectItem.getOptions && ajaxOptions[selectItem.name]
+                            ? ajaxOptions[selectItem.name]
+                            : selectItem.options
+                    ).map((option, optionIndex) => (
                         <Select.Option key={optionIndex} value={option.value}>
                             {option.text}
                         </Select.Option>

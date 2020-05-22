@@ -319,6 +319,11 @@ function Form(props) {
       validateCount = _useState6[0],
       setValidateCount = _useState6[1];
 
+  var _useState7 = useState({}),
+      _useState8 = _slicedToArray(_useState7, 2),
+      ajaxOptions = _useState8[0],
+      setAjaxOptions = _useState8[1];
+
   var customItemStates = items.filter(function (item) {
     return item.itemType === FormItemType.CUSTOM;
   }).reduce(function (states, item) {
@@ -367,7 +372,7 @@ function Form(props) {
               return item.getOptions();
 
             case 6:
-              item.options = _context.sent;
+              ajaxOptions[item.name] = _context.sent;
 
             case 7:
               i++;
@@ -514,7 +519,7 @@ function Form(props) {
           style: {
             width: '100%'
           }
-        }, selectItem.options.map(function (option, optionIndex) {
+        }, (selectItem.getOptions && ajaxOptions[selectItem.name] ? ajaxOptions[selectItem.name] : selectItem.options).map(function (option, optionIndex) {
           return /*#__PURE__*/React.createElement(Select.Option, {
             key: optionIndex,
             value: option.value
