@@ -11,6 +11,8 @@ import { UserOutlined, KeyOutlined } from '@ant-design/icons'
 // import '../dist/umd/index.css'
 // import { Form, FormItemType } from '../dist/umd'
 
+import moment from 'moment'
+
 // 开发环境
 import '../src/index.less'
 import { Form, FormItemType } from '../src'
@@ -94,7 +96,8 @@ const registerFormItems = [
         name: 'birthday',
         itemType: FormItemType.DATEPICKER,
         labelText: '生日',
-        required: true
+        required: true,
+        defaultValue: moment()
     },
     {
         name: 'fruits',
@@ -275,7 +278,7 @@ function CustomAvatar(props) {
 }
 
 export default function App(props) {
-    const [items, setItems] = useState(multipleSelectItems)
+    const [items, setItems] = useState(registerFormItems)
     const [formDisabled, setFormDisabled] = useState(false)
 
     function onChangeTab(key) {
@@ -294,7 +297,7 @@ export default function App(props) {
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab} defaultActiveKey={'multiple select'}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'register'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
                 <TabPane tab='数字' key="numbers"></TabPane>

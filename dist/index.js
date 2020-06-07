@@ -247,10 +247,10 @@ var determineDefaultValue = function determineDefaultValue(item) {
       return isValid(item.defaultValue) ? item.defaultValue : item.options[0] && item.options[0].value || '';
 
     case FormItemType.DATEPICKER:
-      return null;
+      return item.defaultValue || null;
 
     case FormItemType.RANGEPICKER:
-      return [null, null];
+      return item.defaultValue || [null, null];
 
     default:
       // FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CUSTOM
