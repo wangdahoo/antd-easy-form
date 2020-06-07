@@ -518,7 +518,8 @@ function Form(props) {
           },
           style: {
             width: '100%'
-          }
+          },
+          mode: selectItem.multiple ? 'multiple' : undefined
         }, (selectItem.getOptions && ajaxOptions[selectItem.name] ? ajaxOptions[selectItem.name] : selectItem.options).map(function (option, optionIndex) {
           return /*#__PURE__*/React.createElement(Select.Option, {
             key: optionIndex,

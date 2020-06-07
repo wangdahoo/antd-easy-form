@@ -226,6 +226,30 @@ const ajaxOptionsFormItems = [
     }
 ]
 
+const multipleSelectItems = [
+    {
+        name: 'city',
+        labelText: '城市',
+        itemType: FormItemType.SELECT,
+        options: [
+            {
+                value: '上海',
+                text: '上海'
+            },
+            {
+                value: '北京',
+                text: '北京'
+            },
+            {
+                value: '深圳',
+                text: '深圳'
+            }
+        ],
+        defaultValue: ['上海', '北京'],
+        multiple: true
+    }
+]
+
 function CustomAvatar(props) {
     const { value } = props
 
@@ -251,7 +275,7 @@ function CustomAvatar(props) {
 }
 
 export default function App(props) {
-    const [items, setItems] = useState(registerFormItems)
+    const [items, setItems] = useState(multipleSelectItems)
     const [formDisabled, setFormDisabled] = useState(false)
 
     function onChangeTab(key) {
@@ -263,16 +287,19 @@ export default function App(props) {
             setItems(numberFormItems)
         } else if (key === 'ajax options') {
             setItems(ajaxOptionsFormItems)
+        } else if (key === 'multiple select') {
+            setItems(multipleSelectItems)
         }
     }
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab} defaultActiveKey={'register'}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'multiple select'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
                 <TabPane tab='数字' key="numbers"></TabPane>
                 <TabPane tab='load ajax options' key="ajax options"></TabPane>
+                <TabPane tab='Select 支持多选' key="multiple select"></TabPane>
             </Tabs>
 
             <div style={{ width: 600, margin: '20px auto' }}>

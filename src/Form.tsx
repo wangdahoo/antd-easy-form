@@ -253,6 +253,7 @@ export function Form (props: FormProps) {
                         })
                     }}
                     style={{width: '100%'}}
+                    mode={selectItem.multiple ? 'multiple' : undefined}
                 >
                     {(
                         selectItem.getOptions && ajaxOptions[selectItem.name]

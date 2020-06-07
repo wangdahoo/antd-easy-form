@@ -120,11 +120,12 @@ export type SelectItem = {
         value: string | number
         text: string
     }[]
-    defaultValue?: string | number
+    defaultValue?: string | number | string[] | number[]
     getOptions?: () => Promise<{
         value: string | number
         text: string
     }[]>
+    multiple?: boolean
 }
 
 export type DatepickerItem = {
