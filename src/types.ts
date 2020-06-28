@@ -136,6 +136,8 @@ export type DatepickerItem = {
     disabled?: boolean
     defaultValue?: Moment
     required?: boolean
+    picker?: 'date' | 'week' | 'month' | 'quarter' | 'year'
+    format?: string
 }
 
 export type RangepickerItem = {

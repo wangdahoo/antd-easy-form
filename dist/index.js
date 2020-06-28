@@ -505,7 +505,9 @@ function Form(props) {
             if (date !== null) {
               setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, datepickerItem.name, date)));
             }
-          }
+          },
+          picker: datepickerItem.picker || 'date',
+          format: datepickerItem.format || 'YYYY-MM-DD'
         });
 
       case FormItemType.SELECT:

@@ -236,6 +236,8 @@ export function Form (props: FormProps) {
                             })
                         }
                     }}
+                    picker={datepickerItem.picker || 'date'}
+                    format={datepickerItem.format || 'YYYY-MM-DD'}
                 />
             )
 
