@@ -132,6 +132,7 @@ export type DatepickerItem = {
     name: string
     itemType: FormItemType.DATEPICKER
     labelText: string
+    picker: string
     hidden?: boolean
     disabled?: boolean
     defaultValue?: Moment

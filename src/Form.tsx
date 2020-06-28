@@ -236,6 +236,7 @@ export function Form (props: FormProps) {
                             })
                         }
                     }}
+                    picker={datepickerItem.picker ? datepickerItem.picker : undefined}
                 />
             )
 
