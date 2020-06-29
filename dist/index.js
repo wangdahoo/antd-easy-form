@@ -478,7 +478,7 @@ function Form(props) {
     switch (itemType) {
       case FormItemType.CUSTOM:
         var customItem = item;
-        return customItem.render(customItem, customItemStates[customItem.name]);
+        return customItem.render(customItem, customItemStates[customItem.name], formValues);
 
       case FormItemType.RANGEPICKER:
         var rangepickerItem = item;

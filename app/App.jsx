@@ -166,7 +166,7 @@ const registerFormItems = [
         defaultValue: 2,
         render: (item, state) => {
             // the form item
-            // console.log(item)
+            console.log(item)
 
             return <CustomAvatar value={state.value} onChange={newValue => {
                 state.value = newValue

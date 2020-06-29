@@ -157,7 +157,7 @@ export type CustomItem = {
     hidden?: boolean
     disabled?: boolean
     defaultValue: any
-    render: (item: Omit<CustomItem, 'render'>, state: any) => ReactElement
+    render: (item: Omit<CustomItem, 'render'>, state: any, formValues?: FormValues) => ReactElement
     extra?: any,
 }
 

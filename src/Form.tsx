@@ -201,7 +201,7 @@ export function Form (props: FormProps) {
         case FormItemType.CUSTOM:
             const customItem = item as CustomItem
 
-            return customItem.render(customItem as Omit<CustomItem, 'render'>, customItemStates[customItem.name])
+            return customItem.render(customItem as Omit<CustomItem, 'render'>, customItemStates[customItem.name], formValues)
 
         case FormItemType.RANGEPICKER:
             const rangepickerItem = item as DatepickerItem
