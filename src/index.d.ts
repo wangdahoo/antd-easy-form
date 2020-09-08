@@ -20,3 +20,4 @@ export class Form extends React.Component<FormProps> {
     render(): JSX.Element
 }
 
+export * from './types'
