@@ -23,6 +23,9 @@
 .ef-form .ef-form-item-label:after {
   content: '：';
 }
+.ef-form .ef-form-item-label.no-label:after {
+  content: none;
+}
 .ef-form .ef-form-item-label.required::before {
   content: '* ';
   color: #f5222d;

@@ -427,7 +427,8 @@ export function Form (props: FormProps) {
                     return (
                         <div className="ef-form-item" key={index}>
                             <div className={classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '', {
-                                'required': (shouldValidateRequired(item) && (item as any).required)
+                                'required': (shouldValidateRequired(item) && (item as any).required),
+                                'no-label': !(item as any).labelText
                             })} style={{
                                 width: labelWidth,
                                 ...(labelAlign !== 'top' ? {

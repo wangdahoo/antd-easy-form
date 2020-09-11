@@ -648,7 +648,8 @@ function Form(props) {
         key: index
       }, /*#__PURE__*/React.createElement("div", {
         className: classnames('ef-form-item-label', labelAlign === 'top' ? 'label-standalone' : '', {
-          'required': shouldValidateRequired(item) && item.required
+          'required': shouldValidateRequired(item) && item.required,
+          'no-label': !item.labelText
         }),
         style: _objectSpread2({
           width: labelWidth
