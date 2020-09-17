@@ -11,8 +11,8 @@ import moment from 'moment'
 moment.locale('zh-cn')
 
 ReactDOM.render(
-  <ConfigProvider locale={zhCN}>
-    <App />
-  </ConfigProvider>,
-  document.getElementById('root')
+    <ConfigProvider locale={zhCN}>
+        <App />
+    </ConfigProvider>,
+    document.getElementById('root')
 )

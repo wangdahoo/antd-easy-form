@@ -86,7 +86,7 @@ export function Form (props: FormProps) {
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
-    const [ajaxOptions, setAjaxOptions] = useState({} as {
+    const [ajaxOptions, setAjaxOptions] = useState({} as { // eslint-disable-line
         [key: string]: {
             value: string | number
             text: string

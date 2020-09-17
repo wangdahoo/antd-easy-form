@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Tabs, Divider, Avatar, Button, Checkbox } from 'antd'
+import { Tabs, Avatar, Button, Checkbox } from 'antd'
 import { UserOutlined, KeyOutlined } from '@ant-design/icons'
 
 // 按 esm 的方式引入
@@ -15,9 +15,12 @@ import moment from 'moment'
 
 // 开发环境
 import '../src/index.less'
-import { Form, FormItemType } from '../src'
+import { Form, FormItem, FormItemType } from '..'
 
 const TabPane = Tabs.TabPane
+
+const nameReg: RegExp = /^[A-Za-z\d]{4,20}$/
+const passReg: RegExp = /^[A-Za-z\d_,.?/!\\@#$%^&*()\-=+~|]{4,20}$/
 
 const loginFormItems = [
     {
@@ -35,7 +38,7 @@ const loginFormItems = [
         placeholder: '请输入用户名',
         defaultValue: 'admin',
         required: true,
-        re: /^[A-Za-z\d]{4,20}$/,
+        re: nameReg,
         prefix: <UserOutlined />
     },
     {
@@ -45,10 +48,10 @@ const loginFormItems = [
         placeholder: '请输入密码',
         defaultValue: '',
         required: true,
-        re: /^[A-Za-z\d_\,\.\?\/\!\\@\#\$\%\^\&\*\(\)\-\=\+\~\|\\]{4,20}$/,
+        re: passReg,
         prefix: <KeyOutlined />
     }
-]
+] as FormItem[]
 
 const registerFormItems = [
     {
@@ -56,7 +59,7 @@ const registerFormItems = [
         itemType: FormItemType.INPUT,
         labelText: '用户名',
         required: true,
-        re: /^[A-Za-z\d]{4,20}$/
+        re: nameReg
     },
     {
         name: 'password',
@@ -64,7 +67,7 @@ const registerFormItems = [
         labelText: '密码',
         defaultValue: '',
         required: true,
-        re: /^[A-Za-z\d_\,\.\?\/\!\\@\#\$\%\^\&\*\(\)\-\=\+\~\|\\]{4,20}$/
+        re: passReg
     },
     {
         name: 'password2',
@@ -73,7 +76,7 @@ const registerFormItems = [
         placeholder: '请再次输入密码',
         defaultValue: '',
         required: true,
-        re: /^[A-Za-z\d_\,\.\?\/\!\\@\#\$\%\^\&\*\(\)\-\=\+\~\|\\]{4,20}$/
+        re: passReg
     },
     {
         name: 'gender',
@@ -174,7 +177,7 @@ const registerFormItems = [
         },
         extra: {},
     }
-]
+] as FormItem[]
 
 const numberFormItems = [
     {
@@ -195,7 +198,7 @@ const numberFormItems = [
         step: 0.01,
         unit: '¥'
     }
-]
+] as FormItem[]
 
 const ajaxOptionsFormItems = [
     {
@@ -227,7 +230,7 @@ const ajaxOptionsFormItems = [
             })
         }
     }
-]
+] as FormItem[]
 
 const multipleSelectItems = [
     {
@@ -251,9 +254,9 @@ const multipleSelectItems = [
         defaultValue: ['上海', '北京'],
         multiple: true
     }
-]
+] as FormItem[]
 
-function CustomAvatar(props) {
+function CustomAvatar(props: any) {
     const { value } = props
 
     const names = ['魑', '魅', '魍', '魉']
@@ -277,11 +280,11 @@ function CustomAvatar(props) {
     )
 }
 
-export default function App(props) {
-    const [items, setItems] = useState(registerFormItems)
+export default function App(props: any) {
+    const [items, setItems] = useState(loginFormItems)
     const [formDisabled, setFormDisabled] = useState(false)
 
-    function onChangeTab(key) {
+    function onChangeTab(key: string) {
         if (key === 'login') {
             setItems(loginFormItems)
         } else if (key === 'register') {
@@ -297,7 +300,7 @@ export default function App(props) {
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab} defaultActiveKey={'register'}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'login'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
                 <TabPane tab='数字' key="numbers"></TabPane>

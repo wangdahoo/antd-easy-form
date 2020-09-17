@@ -30,97 +30,66 @@ export enum FormItemType {
     CUSTOM = 'custom'
 }
 
-export type InputItem = {
+export type GenericFormItem<ItemType, DefaultValue> = {
     name: string
-    itemType: FormItemType.INPUT
+    itemType: ItemType
     labelText: string
     hidden?: boolean
     disabled?: boolean
+    defaultValue?: DefaultValue
+}
+
+export type InputItem = GenericFormItem<FormItemType.INPUT, string> & {
     placeholder?: string
-    defaultValue?: string
     required?: boolean
     re?: RegExp,
     prefix?: ReactNode
 }
 
-export type PasswordItem = {
-    name: string
-    itemType: FormItemType.PASSWORD
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
+export type PasswordItem = GenericFormItem<FormItemType.PASSWORD, string> & {
     placeholder?: string
-    defaultValue?: string
     required?: boolean
     re?: RegExp
     prefix?: ReactNode
 }
 
-export type NumberItem = {
-    name: string
-    itemType: FormItemType.NUMBER
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
-    defaultValue?: number
+export type NumberItem = GenericFormItem<FormItemType.NUMBER, number> & {
     min?: number
     max?: number
     step?: number
     unit?: string
 }
 
-export type TextareaItem = {
-    name: string
-    itemType: FormItemType.TEXTAREA
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
+export type TextareaItem = GenericFormItem<FormItemType.TEXTAREA, string> & {
     placeholder?: string
-    defaultValue?: string
     required?: boolean
     re?: RegExp
 }
 
-export type CheckboxItem = {
-    name: string
-    itemType: FormItemType.CHECKBOX
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
+// TODO: 这里原来的 defaultValue 是不带 ? 的
+export type CheckboxItem = GenericFormItem<FormItemType.CHECKBOX, (string | number)[]> & {
     options: {
         value: string | number
         text: string
     }[]
-    defaultValue: (string | number)[]
     required?: boolean
 }
 
-export type RadioItem = {
-    name: string
-    itemType: FormItemType.RADIO
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
+// TODO: 这里原来的 defaultValue 是不带 ? 的
+export type RadioItem = GenericFormItem<FormItemType.RADIO, string | number> & {
     options: {
         value: string | number
         text: string
     }[]
-    defaultValue: string | number
     buttonStyle: 'outline' | 'solid'
     required?: boolean
 }
 
-export type SelectItem = {
-    name: string
-    itemType: FormItemType.SELECT
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
+export type SelectItem = GenericFormItem<FormItemType.SELECT, string | number | string[] | number[]> & {
     options: {
         value: string | number
         text: string
     }[]
-    defaultValue?: string | number | string[] | number[]
     getOptions?: () => Promise<{
         value: string | number
         text: string
@@ -128,29 +97,17 @@ export type SelectItem = {
     multiple?: boolean
 }
 
-export type DatepickerItem = {
-    name: string
-    itemType: FormItemType.DATEPICKER
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
-    defaultValue?: Moment
+export type DatepickerItem = GenericFormItem<FormItemType.DATEPICKER, Moment> & {
     required?: boolean
     picker?: 'date' | 'week' | 'month' | 'quarter' | 'year'
     format?: string
 }
 
-export type RangepickerItem = {
-    name: string
-    itemType: FormItemType.RANGEPICKER
-    labelText: string
-    hidden?: boolean
-    disabled?: boolean
-    defaultValue?: Moment[]
+export type RangepickerItem = GenericFormItem<FormItemType.RANGEPICKER, Moment[]> & {
     required?: boolean
 }
 
-export type CustomItem = {
+export type CustomItem = GenericFormItem<FormItemType.CUSTOM, any> & {
     name: string
     itemType: FormItemType.CUSTOM
     labelText: string
