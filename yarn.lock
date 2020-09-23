@@ -1015,6 +1015,11 @@
     estree-walker "^1.0.1"
     micromatch "^4.0.2"
 
+"@sinclair/typebox@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.npm.taobao.org/@sinclair/typebox/download/@sinclair/typebox-0.10.1.tgz#5239a7f3b3e51bab3c2838550639350126746079"
+  integrity sha1-Ujmn87PlG6s8KDhVBjk1ASZ0YHk=
+
 "@types/antd@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/@types/antd/download/@types/antd-1.0.0.tgz#f04e2a84efd9ea937366cd3dfbada5d3c949471d"
@@ -1206,6 +1211,16 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.5.5:
   version "6.12.2"
   resolved "https://registry.npm.taobao.org/ajv/download/ajv-6.12.2.tgz?cache=0&sync_timestamp=1587338976726&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fajv%2Fdownload%2Fajv-6.12.2.tgz#c629c5eced17baf314437918d2da88c99d5958cd"
   integrity sha1-xinF7O0XuvMUQ3kY0tqIyZ1ZWM0=
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.4.1"
+    uri-js "^4.2.2"
+
+ajv@^6.12.5:
+  version "6.12.5"
+  resolved "https://registry.npm.taobao.org/ajv/download/ajv-6.12.5.tgz?cache=0&sync_timestamp=1600261962070&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fajv%2Fdownload%2Fajv-6.12.5.tgz#19b0e8bae8f476e5ba666300387775fb1a00a4da"
+  integrity sha1-GbDouuj0duW6ZmMAOHd1+xoApNo=
   dependencies:
     fast-deep-equal "^3.1.1"
     fast-json-stable-stringify "^2.0.0"

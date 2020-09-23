@@ -16,6 +16,7 @@ import moment from 'moment'
 // 开发环境
 import '../src/index.less'
 import { Form, FormItem, FormItemType } from '..'
+import { FormRenderer } from '../renderer'
 
 const TabPane = Tabs.TabPane
 
@@ -281,7 +282,7 @@ function CustomAvatar(props: any) {
 }
 
 export default function App(props: any) {
-    const [items, setItems] = useState(loginFormItems)
+    const [items, setItems] = useState([])
     const [formDisabled, setFormDisabled] = useState(false)
 
     function onChangeTab(key: string) {
@@ -295,31 +296,56 @@ export default function App(props: any) {
             setItems(ajaxOptionsFormItems)
         } else if (key === 'multiple select') {
             setItems(multipleSelectItems)
+        } else if (key === 'form renderer') {
+            setItems([])
         }
     }
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab} defaultActiveKey={'login'}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'form renderer'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
                 <TabPane tab='数字' key="numbers"></TabPane>
                 <TabPane tab='load ajax options' key="ajax options"></TabPane>
                 <TabPane tab='Select 支持多选' key="multiple select"></TabPane>
+                <TabPane tab='Form Renderer' key="form renderer"></TabPane>
             </Tabs>
 
             <div style={{ width: 600, margin: '20px auto' }}>
-                <Checkbox checked={formDisabled} onChange={e => {
-                    setFormDisabled(e.target.checked)
-                }}>Form Disabled</Checkbox>
+                {items.length > 0 ? (
+                    <>
+                        <Checkbox checked={formDisabled} onChange={e => {
+                            setFormDisabled(e.target.checked)
+                        }}>Form Disabled</Checkbox>
 
-                <Form
-                    items={items}
-                    labelAlign={'right'}
-                    labelWidth={120}
-                    onSubmit={console.log}
-                    disabled={formDisabled}
-                />
+                        <Form
+                            items={items}
+                            labelAlign={'right'}
+                            labelWidth={120}
+                            onSubmit={console.log}
+                            disabled={formDisabled}
+                        />
+                    </>
+                ) : (
+                    <FormRenderer schema={{
+                        labelWidth: 120,
+                        items: [
+                            {
+                                name: 'username',
+                                labelText: '用户名',
+                                itemType: 'input',
+                                required: true
+                            },
+                            {
+                                name: 'password',
+                                labelText: '密码',
+                                itemType: 'password',
+                                required: true
+                            }
+                        ]
+                    }} />
+                )}
             </div>
         </div>
     )
