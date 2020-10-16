@@ -15,7 +15,7 @@ import moment from 'moment'
 
 // 开发环境
 import '../src/index.less'
-import { Form, FormItem, FormItemType } from '..'
+import { Form, FormItem, FormItemType, ExtraAction } from '..'
 import { FormRenderer } from '../renderer'
 
 const TabPane = Tabs.TabPane
@@ -284,6 +284,13 @@ function CustomAvatar(props: any) {
 export default function App(props: any) {
     const [items, setItems] = useState([])
     const [formDisabled, setFormDisabled] = useState(false)
+    const [extra, setExtra] = useState([
+        {
+            text: 'extra action',
+            buttonWidth: 120,
+            onAction: console.log
+        }
+    ] as ExtraAction[])
 
     function onChangeTab(key: string) {
         if (key === 'login') {
@@ -299,11 +306,22 @@ export default function App(props: any) {
         } else if (key === 'form renderer') {
             setItems([])
         }
+
+        setExtra(key === 'login' ? [
+            {
+                key: 'action-1',
+                text: 'extra action',
+                buttonWidth: 120,
+                onAction: console.log
+            }
+        ] as ExtraAction[] : [])
     }
+
+    console.log('extra', extra)
 
     return (
         <div style={{ padding: 20 }}>
-            <Tabs onChange={onChangeTab} defaultActiveKey={'form renderer'}>
+            <Tabs onChange={onChangeTab} defaultActiveKey={'login'}>
                 <TabPane tab='用户登录' key="login"></TabPane>
                 <TabPane tab='用户注册' key="register"></TabPane>
                 <TabPane tab='数字' key="numbers"></TabPane>
@@ -325,6 +343,7 @@ export default function App(props: any) {
                             labelWidth={120}
                             onSubmit={console.log}
                             disabled={formDisabled}
+                            extra={extra}
                         />
                     </>
                 ) : (

@@ -15,6 +15,7 @@ export interface FormProps {
     resetAfterSubmit?: boolean
     hideResetButton?: boolean
     disabled?: boolean
+    extra?: ExtraAction[]
 }
 
 export enum FormItemType {
@@ -127,4 +128,12 @@ export type FormValues = {
 export interface ValidationResult {
     result: boolean
     errors: { [name: string]: string }
+}
+
+export interface ExtraAction {
+    key: string
+    text: string
+    buttonType?: 'default'|'primary'|'link'|'ghost'|'dashed'
+    buttonWidth?: number
+    onAction?: (key: string) => void|Promise<void>
 }

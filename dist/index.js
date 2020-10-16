@@ -299,7 +299,9 @@ function Form(props) {
       _props$resetAfterSubm = props.resetAfterSubmit,
       resetAfterSubmit = _props$resetAfterSubm === void 0 ? false : _props$resetAfterSubm,
       _props$hideResetButto = props.hideResetButton,
-      hideResetButton = _props$hideResetButto === void 0 ? false : _props$hideResetButto;
+      hideResetButton = _props$hideResetButto === void 0 ? false : _props$hideResetButto,
+      _props$extra = props.extra,
+      extra = _props$extra === void 0 ? [] : _props$extra;
 
   var _useState = useState(createFormValues(items)),
       _useState2 = _slicedToArray(_useState, 2),
@@ -674,16 +676,30 @@ function Form(props) {
     type: "primary",
     onClick: onSubmit,
     style: {
-      width: 90,
-      marginRight: 16
+      width: 90
     }
   }, submitText), hideResetButton ? null : /*#__PURE__*/React.createElement(Button, {
     type: "default",
     onClick: onReset,
     style: {
-      width: 90
+      width: 90,
+      marginLeft: 16
     }
-  }, resetText))));
+  }, resetText), extra.map(function (action) {
+    return /*#__PURE__*/React.createElement(Button, {
+      key: action.key,
+      type: action.buttonType || 'default',
+      onClick: function onClick() {
+        if (action.onAction) {
+          action.onAction(action.key);
+        }
+      },
+      style: {
+        width: action.buttonWidth || 90,
+        marginLeft: 16
+      }
+    }, action.text);
+  }))));
 }
 
 export { Form, FormItemType };

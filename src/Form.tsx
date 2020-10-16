@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty, DatePicker } from 'antd'
 import classnames from 'classnames'
 import { FormItem, FormValues, FormItemType, FormProps, ValidationResult,
-    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem, CustomItem, DatepickerItem } from './types'
+    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem, CustomItem, DatepickerItem, ExtraAction } from './types'
 import { clone } from './deepClone'
 import { Moment } from 'moment'
 
@@ -82,7 +82,7 @@ const shouldValidateRegExp = (item: FormItem) => [
 export function Form (props: FormProps) {
     const items = (props.items || []).map(i => ({ ...i, disabled: props.disabled || i.disabled }))
     const { formWidth = 100, formWidthUnit = '%', labelAlign = 'right', labelWidth = 100, submitText = '提交', resetText = '重置',
-        resetAfterSubmit = false, hideResetButton = false } = props
+        resetAfterSubmit = false, hideResetButton = false, extra = [] } = props
     const [formValues, setFormValues] = useState(createFormValues(items))
     const [validationResult, setValidationResult] = useState({ result: false, errors: {} })
     const [validateCount, setValidateCount] = useState(0)
@@ -454,8 +454,13 @@ export function Form (props: FormProps) {
                 <Divider className='ef-divider' />
 
                 <div style={{ paddingLeft: labelWidth }}>
-                    <Button type="primary" onClick={onSubmit} style={{ width: 90, marginRight: 16 }}>{submitText}</Button>
-                    {hideResetButton ? null :<Button type="default" onClick={onReset} style={{ width: 90 }}>{resetText}</Button>}
+                    <Button type="primary" onClick={onSubmit} style={{ width: 90 }}>{submitText}</Button>
+                    {hideResetButton ? null : <Button type="default" onClick={onReset} style={{ width: 90, marginLeft: 16 }}>{resetText}</Button>}
+                    {extra.map((action: ExtraAction) => <Button key={action.key} type={action.buttonType || 'default'} onClick={() => {
+                        if (action.onAction) {
+                            action.onAction(action.key)
+                        }
+                    }} style={{ width: action.buttonWidth || 90, marginLeft: 16 }}>{action.text}</Button>)}
                 </div>
             </>}
         </div>
