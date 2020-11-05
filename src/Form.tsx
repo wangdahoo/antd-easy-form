@@ -333,7 +333,7 @@ export function Form (props: FormProps) {
 
         case FormItemType.NUMBER:
             const numberItem = item as NumberItem
-            const { min = 0, max = 100, step = 1, unit = '' } = numberItem
+            const { min = 0, max = 100, step = 1 } = numberItem
 
             return (
                 <InputNumber
@@ -351,14 +351,6 @@ export function Form (props: FormProps) {
                     min={min}
                     max={max}
                     step={step}
-                    formatter={value => {
-                        if (!value) return `${min} ${unit}`
-                        return `${value} ${unit}`
-                    }}
-                    parser={value => {
-                        if (!value) return Number(min)
-                        return Number(value.replace(` ${unit}`, ''))
-                    }}
                 />
             )
 

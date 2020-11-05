@@ -580,9 +580,7 @@ function Form(props) {
             _numberItem$max = numberItem.max,
             max = _numberItem$max === void 0 ? 100 : _numberItem$max,
             _numberItem$step = numberItem.step,
-            step = _numberItem$step === void 0 ? 1 : _numberItem$step,
-            _numberItem$unit = numberItem.unit,
-            unit = _numberItem$unit === void 0 ? '' : _numberItem$unit;
+            step = _numberItem$step === void 0 ? 1 : _numberItem$step;
         return /*#__PURE__*/React.createElement(InputNumber, {
           disabled: numberItem.disabled,
           style: {
@@ -595,15 +593,7 @@ function Form(props) {
           },
           min: min,
           max: max,
-          step: step,
-          formatter: function formatter(value) {
-            if (!value) return "".concat(min, " ").concat(unit);
-            return "".concat(value, " ").concat(unit);
-          },
-          parser: function parser(value) {
-            if (!value) return Number(min);
-            return Number(value.replace(" ".concat(unit), ''));
-          }
+          step: step
         });
 
       case FormItemType.PASSWORD:

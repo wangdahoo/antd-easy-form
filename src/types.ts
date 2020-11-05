@@ -58,7 +58,6 @@ export type NumberItem = GenericFormItem<FormItemType.NUMBER, number> & {
     min?: number
     max?: number
     step?: number
-    unit?: string
 }
 
 export type TextareaItem = GenericFormItem<FormItemType.TEXTAREA, string> & {

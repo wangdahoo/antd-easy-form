@@ -187,8 +187,7 @@ const numberFormItems = [
         itemType: FormItemType.NUMBER,
         min: 0,
         max: 10000,
-        step: 1,
-        unit: '个'
+        step: 1
     },
     {
         name: 'price',
