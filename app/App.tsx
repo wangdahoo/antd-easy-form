@@ -257,6 +257,16 @@ const multipleSelectItems = [
     }
 ] as FormItem[]
 
+const datepickerAndTimepickerFormItems = [
+    {
+        name: 'birthday',
+        itemType: FormItemType.DATEPICKER,
+        labelText: '生日',
+        required: true,
+        defaultValue: moment()
+    }
+] as FormItem[]
+
 function CustomAvatar(props: any) {
     const { value } = props
 
@@ -303,6 +313,8 @@ export default function App(props: any) {
             setItems(ajaxOptionsFormItems)
         } else if (key === 'multiple select') {
             setItems(multipleSelectItems)
+        } else if (key === 'datepicker and timepicker') {
+            setItems(datepickerAndTimepickerFormItems)
         } else if (key === 'form renderer') {
             setItems([])
         }
@@ -317,7 +329,7 @@ export default function App(props: any) {
         ] as ExtraAction[] : [])
     }
 
-    console.log('extra', extra)
+    // console.log('extra', extra)
 
     return (
         <div style={{ padding: 20 }}>
@@ -327,6 +339,7 @@ export default function App(props: any) {
                 <TabPane tab='数字' key="numbers"></TabPane>
                 <TabPane tab='load ajax options' key="ajax options"></TabPane>
                 <TabPane tab='Select 支持多选' key="multiple select"></TabPane>
+                <TabPane tab='Date & Time' key="datepicker and timepicker"></TabPane>
                 <TabPane tab='Form Renderer' key="form renderer"></TabPane>
             </Tabs>
 
