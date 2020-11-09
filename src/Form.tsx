@@ -2,10 +2,11 @@
 
 import './index.less'
 import React, { useState, useEffect } from 'react'
-import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty, DatePicker } from 'antd'
+import { Radio, Input, Select, Checkbox, Divider, Button, InputNumber, Empty, DatePicker, Cascader } from 'antd'
 import classnames from 'classnames'
 import { FormItem, FormValues, FormItemType, FormProps, ValidationResult,
-    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem, InputItem, CustomItem, DatepickerItem, ExtraAction } from './types'
+    SelectItem, CheckboxItem, RadioItem, TextareaItem, NumberItem, PasswordItem,
+    InputItem, DatepickerItem, CascaderItem, CustomItem, ExtraAction, CascaderOption } from './types'
 import { clone } from './deepClone'
 import { Moment } from 'moment'
 
@@ -70,7 +71,8 @@ const shouldValidateRequired = (item: FormItem) => [
     FormItemType.CHECKBOX,
     FormItemType.RADIO,
     FormItemType.DATEPICKER,
-    FormItemType.RANGEPICKER
+    FormItemType.RANGEPICKER,
+    FormItemType.CASCADER
 ].indexOf(item.itemType) > -1
 
 const shouldValidateRegExp = (item: FormItem) => [
@@ -202,6 +204,41 @@ export function Form (props: FormProps) {
             const customItem = item as CustomItem
 
             return customItem.render(customItem as Omit<CustomItem, 'render'>, customItemStates[customItem.name], formValues)
+
+        case FormItemType.CASCADER:
+            const cascaderItem = item as CascaderItem
+
+            type InnerCascaderOption = {
+                value: string | number
+                label: string
+                children?: InnerCascaderOption[]
+            }
+
+            const renameTextAsLabel = (options: CascaderOption[]): InnerCascaderOption[] => {
+                return options.map(option => ({
+                    value: option.value,
+                    label: option.text,
+                    ...(option.children ? { children: renameTextAsLabel(option.children) } : {})
+                }))
+            }
+
+            const InnerCascaderOptions = renameTextAsLabel(cascaderItem.options)
+            // console.log(InnerCascaderOptions)
+
+            return (
+                <Cascader
+                    options={InnerCascaderOptions}
+                    defaultValue={cascaderItem.defaultValue || []}
+                    value={formValues[cascaderItem.name] as (string[] | number[])}
+                    onChange={(value: (string | number)[]) => {
+                        setFormValues({
+                            ...formValues,
+                            [cascaderItem.name]: value
+                        })
+                    }}
+                    style={{width: '100%'}}
+                />
+            )
 
         case FormItemType.RANGEPICKER:
             const rangepickerItem = item as DatepickerItem
@@ -412,6 +449,7 @@ export function Form (props: FormProps) {
                     FormItemType.SELECT,
                     FormItemType.DATEPICKER,
                     FormItemType.RANGEPICKER,
+                    FormItemType.CASCADER,
                     FormItemType.CUSTOM
                 ].indexOf(itemType) > -1) {
                     const errMsg: string = (validationResult.errors as any)[item.name]

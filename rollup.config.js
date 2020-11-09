@@ -44,6 +44,7 @@ const plugins = [
         ],
         exclude: 'node_modules/**',
         extensions,
+        babelHelpers: 'bundled'
     }),
 ]
 

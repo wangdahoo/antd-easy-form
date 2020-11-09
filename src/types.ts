@@ -28,6 +28,7 @@ export enum FormItemType {
     SELECT = 'select',
     DATEPICKER = 'datepicker',
     RANGEPICKER = 'rangepicker',
+    CASCADER = 'cascader',
     CUSTOM = 'custom'
 }
 
@@ -107,6 +108,18 @@ export type RangepickerItem = GenericFormItem<FormItemType.RANGEPICKER, Moment[]
     required?: boolean
 }
 
+export type CascaderOption = {
+    value: string | number
+    text: string
+    children?: CascaderOption[]
+}
+
+export type CascaderItem = GenericFormItem<FormItemType.CASCADER, (string | number)[]> & {
+    required?: boolean
+    options: CascaderOption[]
+    getOptions?: () => Promise<CascaderOption[]>
+}
+
 export type CustomItem = GenericFormItem<FormItemType.CUSTOM, any> & {
     name: string
     itemType: FormItemType.CUSTOM
@@ -118,10 +131,10 @@ export type CustomItem = GenericFormItem<FormItemType.CUSTOM, any> & {
     extra?: any,
 }
 
-export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem | DatepickerItem | RangepickerItem | CustomItem // eslint-disable-line
+export type FormItem = InputItem | PasswordItem | NumberItem | TextareaItem | CheckboxItem | RadioItem | SelectItem | DatepickerItem | RangepickerItem | CascaderItem | CustomItem // eslint-disable-line
 
 export type FormValues = {
-    [key: string]: string | string[] | number | Moment | Moment[] | null | undefined
+    [key: string]: string | string[] | number | Moment | Moment[] | (string | number)[] | null | undefined
 }
 
 export interface ValidationResult {

@@ -266,6 +266,37 @@ const datepickerAndTimepickerFormItems = [
     }
 ] as FormItem[]
 
+const cascaderItems = [
+    {
+        name: 'city',
+        labelText: '城市',
+        itemType: FormItemType.CASCADER,
+        required: true,
+        options: [
+            {
+                value: 'zhejiang',
+                text: 'Zhejiang',
+                children: [
+                    {
+                        value: 'hangzhou',
+                        text: 'Hangzhou',
+                    },
+                ],
+            },
+            {
+                value: 'jiangsu',
+                text: 'Jiangsu',
+                children: [
+                    {
+                        value: 'nanjing',
+                        text: 'Nanjing',
+                    },
+                ],
+            }
+        ]
+    }
+] as FormItem[]
+
 function CustomAvatar(props: any) {
     const { value } = props
 
@@ -314,6 +345,8 @@ export default function App(props: any) {
             setItems(multipleSelectItems)
         } else if (key === 'datepicker and timepicker') {
             setItems(datepickerAndTimepickerFormItems)
+        } else if (key === 'cascader') {
+            setItems(cascaderItems)
         } else if (key === 'form renderer') {
             setItems([])
         }
@@ -339,6 +372,7 @@ export default function App(props: any) {
                 <TabPane tab='load ajax options' key="ajax options"></TabPane>
                 <TabPane tab='Select 支持多选' key="multiple select"></TabPane>
                 <TabPane tab='Date & Time' key="datepicker and timepicker"></TabPane>
+                <TabPane tab='Cascader' key="cascader"></TabPane>
                 <TabPane tab='Form Renderer' key="form renderer"></TabPane>
             </Tabs>
 
@@ -359,24 +393,24 @@ export default function App(props: any) {
                         />
                     </>
                 ) : (
-                    <FormRenderer schema={{
-                        labelWidth: 120,
-                        items: [
-                            {
-                                name: 'username',
-                                labelText: '用户名',
-                                itemType: 'input',
-                                required: true
-                            },
-                            {
-                                name: 'password',
-                                labelText: '密码',
-                                itemType: 'password',
-                                required: true
-                            }
-                        ]
-                    }} />
-                )}
+                        <FormRenderer schema={{
+                            labelWidth: 120,
+                            items: [
+                                {
+                                    name: 'username',
+                                    labelText: '用户名',
+                                    itemType: 'input',
+                                    required: true
+                                },
+                                {
+                                    name: 'password',
+                                    labelText: '密码',
+                                    itemType: 'password',
+                                    required: true
+                                }
+                            ]
+                        }} />
+                    )}
             </div>
         </div>
     )

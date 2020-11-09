@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Empty, Divider, Button, Input, InputNumber, Radio, Checkbox, Select, DatePicker } from 'antd';
+import { Empty, Divider, Button, Input, InputNumber, Radio, Checkbox, Select, DatePicker, Cascader } from 'antd';
 import classnames from 'classnames';
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -155,6 +155,7 @@ var FormItemType;
   FormItemType["SELECT"] = "select";
   FormItemType["DATEPICKER"] = "datepicker";
   FormItemType["RANGEPICKER"] = "rangepicker";
+  FormItemType["CASCADER"] = "cascader";
   FormItemType["CUSTOM"] = "custom";
 })(FormItemType || (FormItemType = {}));
 
@@ -271,7 +272,7 @@ var createFormValues = function createFormValues(items) {
 };
 
 var shouldValidateRequired = function shouldValidateRequired(item) {
-  return [FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.CHECKBOX, FormItemType.RADIO, FormItemType.DATEPICKER, FormItemType.RANGEPICKER].indexOf(item.itemType) > -1;
+  return [FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.TEXTAREA, FormItemType.CHECKBOX, FormItemType.RADIO, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CASCADER].indexOf(item.itemType) > -1;
 };
 
 var shouldValidateRegExp = function shouldValidateRegExp(item) {
@@ -482,6 +483,34 @@ function Form(props) {
         var customItem = item;
         return customItem.render(customItem, customItemStates[customItem.name], formValues);
 
+      case FormItemType.CASCADER:
+        var cascaderItem = item;
+
+        var renameTextAsLabel = function renameTextAsLabel(options) {
+          return options.map(function (option) {
+            return _objectSpread2({
+              value: option.value,
+              label: option.text
+            }, option.children ? {
+              children: renameTextAsLabel(option.children)
+            } : {});
+          });
+        };
+
+        var InnerCascaderOptions = renameTextAsLabel(cascaderItem.options); // console.log(InnerCascaderOptions)
+
+        return /*#__PURE__*/React.createElement(Cascader, {
+          options: InnerCascaderOptions,
+          defaultValue: cascaderItem.defaultValue || [],
+          value: formValues[cascaderItem.name],
+          onChange: function onChange(value) {
+            setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, cascaderItem.name, value)));
+          },
+          style: {
+            width: '100%'
+          }
+        });
+
       case FormItemType.RANGEPICKER:
         var rangepickerItem = item;
         return /*#__PURE__*/React.createElement(DatePicker.RangePicker, {
@@ -633,7 +662,7 @@ function Form(props) {
   }).map(function (item, index) {
     var itemType = item.itemType;
 
-    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CUSTOM].indexOf(itemType) > -1) {
+    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CASCADER, FormItemType.CUSTOM].indexOf(itemType) > -1) {
       var errMsg = validationResult.errors[item.name];
       return /*#__PURE__*/React.createElement("div", {
         className: "ef-form-item",
