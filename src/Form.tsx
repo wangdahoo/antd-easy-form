@@ -48,6 +48,7 @@ const createFormValues = (items: FormItem[]): FormValues => {
             FormItemType.SELECT,
             FormItemType.DATEPICKER,
             FormItemType.RANGEPICKER,
+            FormItemType.CASCADER,
             FormItemType.CUSTOM
         ].indexOf(item.itemType) > -1) {
             return {
@@ -228,7 +229,6 @@ export function Form (props: FormProps) {
             return (
                 <Cascader
                     options={InnerCascaderOptions}
-                    defaultValue={cascaderItem.defaultValue || []}
                     value={formValues[cascaderItem.name] as (string[] | number[])}
                     onChange={(value: (string | number)[]) => {
                         setFormValues({

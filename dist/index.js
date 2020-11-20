@@ -261,7 +261,7 @@ var determineDefaultValue = function determineDefaultValue(item) {
 
 var createFormValues = function createFormValues(items) {
   var values = items.reduce(function (values, item) {
-    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CUSTOM].indexOf(item.itemType) > -1) {
+    if ([FormItemType.INPUT, FormItemType.PASSWORD, FormItemType.NUMBER, FormItemType.TEXTAREA, FormItemType.RADIO, FormItemType.CHECKBOX, FormItemType.SELECT, FormItemType.DATEPICKER, FormItemType.RANGEPICKER, FormItemType.CASCADER, FormItemType.CUSTOM].indexOf(item.itemType) > -1) {
       return _objectSpread2(_objectSpread2({}, values), {}, _defineProperty({}, item.name, determineDefaultValue(item)));
     }
 
@@ -501,7 +501,6 @@ function Form(props) {
 
         return /*#__PURE__*/React.createElement(Cascader, {
           options: InnerCascaderOptions,
-          defaultValue: cascaderItem.defaultValue || [],
           value: formValues[cascaderItem.name],
           onChange: function onChange(value) {
             setFormValues(_objectSpread2(_objectSpread2({}, formValues), {}, _defineProperty({}, cascaderItem.name, value)));

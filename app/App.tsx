@@ -293,7 +293,8 @@ const cascaderItems = [
                     },
                 ],
             }
-        ]
+        ],
+        defaultValue: ['zhejiang', 'hangzhou']
     }
 ] as FormItem[]
 
